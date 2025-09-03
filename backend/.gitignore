@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+anotacoes.txt
+# Django
+*.log
+*.pot
+*.pyc
+*.mo
+*.db
+*.sqlite3
+*.sqlite3-journal
+
+# Media and static files
+/media
+/staticfiles
+/static
+
+# Virtual environments
+env/
+venv/
+ENV/
+.venv/
+.env/
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# dotenv
+.env
+*.env
+
+# Migrations
+**/migrations/
+**/migrations/*.pyc
+**/migrations/*.py
+
+# Coverage reports
+htmlcov/
+.coverage
+.tox/
+.nox/
+.cache/
+.pytest_cache/
