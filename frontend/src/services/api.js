@@ -1,5 +1,17 @@
+import axios from "axios";
+
 // Configuração base da API
 const API_BASE_URL = 'http://localhost:8000/api';
+
+export const api = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+
+
 
 // Função helper para fazer requisições
 const apiRequest = async (endpoint, options = {}) => {
@@ -29,10 +41,9 @@ const apiRequest = async (endpoint, options = {}) => {
 
 // Serviços para Alimentos
 export const alimentosService = {
-  // Listar alimentos com busca opcional
   listar: (search = '') => {
     const params = search ? `?search=${encodeURIComponent(search)}` : '';
-    return apiRequest(`/alimentos/${params}`);
+    return api.get(`/alimentos/${params}`);
   },
 };
 
@@ -40,22 +51,16 @@ export const alimentosService = {
 export const refeicoesService = {
   // Listar todas as refeições
   listar: () => {
-    return apiRequest('/refeicoes/');
+    return api.get('/refeicoes/');
   },
 
   // Criar nova refeição
-  criar: (dados) => {
-    return apiRequest('/refeicoes/', {
-      method: 'POST',
-      body: JSON.stringify(dados),
-    });
+  criar: (data) => {
+    return api.post('/refeicoes/', data);
   },
 
   // Deletar refeição
-  deletar: (refeicaoId) => {
-    return apiRequest('/refeicoes/', {
-      method: 'DELETE',
-      body: JSON.stringify({ refeicao_id: refeicaoId }),
-    });
+  deletar: (id) => {
+    return api.delete(`/refeicoes/${id}/`);
   },
 };

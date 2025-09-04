@@ -39,6 +39,7 @@ import {
   Kitchen,
 } from '@mui/icons-material';
 import { alimentosService, refeicoesService } from '../../services/api';
+import Swal from "sweetalert2";
 
 const CadastroRefeicao = ({ onVoltar, onRefeicaoCriada }) => {
   const [nome, setNome] = useState('');
@@ -71,7 +72,7 @@ const CadastroRefeicao = ({ onVoltar, onRefeicaoCriada }) => {
     try {
       setLoadingAlimentos(true);
       const dados = await alimentosService.listar(termoBusca);
-      setAlimentos(dados.results || dados);
+      setAlimentos(dados.data);
     } catch (err) {
       console.error('Erro ao carregar alimentos:', err);
     } finally {
@@ -156,9 +157,8 @@ const CadastroRefeicao = ({ onVoltar, onRefeicaoCriada }) => {
       };
 
       await refeicoesService.criar(dadosRefeicao);
-      
-      setSuccess('Refeição criada com sucesso!');
-      
+      Swal.fire("Sucesso", "A refeição foi criada com sucesso!", "success");
+
       setTimeout(() => {
         if (onRefeicaoCriada) {
           onRefeicaoCriada();
@@ -170,8 +170,7 @@ const CadastroRefeicao = ({ onVoltar, onRefeicaoCriada }) => {
       }, 1500);
       
     } catch (err) {
-      setError('Erro ao salvar refeição: ' + err.message);
-      setSuccess('');
+      Swal.fire("Erro!", "Erro ao tentar criar a refeição, tente novamente.", "error");
     } finally {
       setLoading(false);
     }

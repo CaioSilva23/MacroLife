@@ -46,6 +46,7 @@ import {
   FitnessCenter,
 } from '@mui/icons-material';
 import { refeicoesService } from '../../services/api';
+import Swal from "sweetalert2";
 
 const ListaRefeicoes = ({ onCriarRefeicao }) => {
   const theme = useTheme();
@@ -68,7 +69,7 @@ const ListaRefeicoes = ({ onCriarRefeicao }) => {
       setLoading(true);
       setError('');
       const dados = await refeicoesService.listar();
-      setRefeicoes(dados);
+      setRefeicoes(dados.data);
     } catch (err) {
       setError('Erro ao carregar refeições: ' + err.message);
     } finally {
@@ -76,21 +77,33 @@ const ListaRefeicoes = ({ onCriarRefeicao }) => {
     }
   };
 
-  const deletarRefeicao = async (id) => {
-    if (window.confirm('Tem certeza que deseja deletar esta refeição?')) {
-      try {
-        setDeletandoId(id);
-        await refeicoesService.deletar(id);
-        await carregarRefeicoes(); // Recarregar lista
-        setDialogAberto(false);
-        setSuccess('Refeição deletada com sucesso!');
-        setTimeout(() => setSuccess(''), 3000);
-      } catch (err) {
-        setError('Erro ao deletar refeição: ' + err.message);
-        setTimeout(() => setError(''), 5000);
-      } finally {
-        setDeletandoId(null);
+  const AlertDeletarRefeicao = (id) => {
+    Swal.fire({
+      title: "Tem certeza ?",
+      text: "Você não poderá reverter isso!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sim, deletar!",
+    }).then((result) => {
+      if (result.value) {
+        deletarRefeicao(id);
       }
+    });
+  };
+
+  const deletarRefeicao = async (id) => {
+    try {
+      setDeletandoId(id);
+      await refeicoesService.deletar(id);
+      await carregarRefeicoes(); // Recarregar lista
+      setDialogAberto(false);
+      Swal.fire("Sucesso", "A refeição foi deletada com sucesso!", "success");
+    } catch (err) {
+      Swal.fire("Erro!", "Erro ao tentar deletar a refeição, tente novamente.", "error");
+    } finally {
+      setDeletandoId(null);
     }
   };
 
@@ -666,7 +679,7 @@ const ListaRefeicoes = ({ onCriarRefeicao }) => {
                 Fechar
               </Button>
               <Button
-                onClick={() => deletarRefeicao(refeicaoSelecionada.id)}
+                onClick={() => AlertDeletarRefeicao(refeicaoSelecionada.id)}
                 variant="contained"
                 color="error"
                 startIcon={deletandoId === refeicaoSelecionada.id ? <CircularProgress size={16} color="inherit" /> : <Delete />}
