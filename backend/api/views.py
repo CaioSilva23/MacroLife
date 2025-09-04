@@ -71,11 +71,19 @@ class RefeicaoCreateView(APIView):
         refeicoes = RefeicaoSerializer(Refeicao.objects.all(), many=True)
         return Response(refeicoes.data, status=status.HTTP_200_OK)
 
-    def delete(self, request, *args, **kwargs):
-        """
-        Deletar uma refeição pelo ID.
-        """
-        refeicao_id = request.data.get("refeicao_id")
+class RefeicaoDetailView(APIView):
+    """
+    Detalhes de uma refeição específica.
+    """
+    def get(self, request, refeicao_id, *args, **kwargs):
+        try:
+            refeicao = Refeicao.objects.get(id=refeicao_id)
+            serializer = RefeicaoSerializer(refeicao)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Refeicao.DoesNotExist:
+            return Response({"error": "Refeição não encontrada"}, status=status.HTTP_404_NOT_FOUND)
+        
+    def delete(self, request, refeicao_id, *args, **kwargs):
         try:
             refeicao = Refeicao.objects.get(id=refeicao_id)
             refeicao.delete()
