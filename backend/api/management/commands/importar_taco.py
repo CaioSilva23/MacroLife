@@ -36,4 +36,5 @@ class Command(BaseCommand):
                 fibra_g=parse_valor(df.loc[i, 'Fibra Alimentar']),
                 sodio_mg=parse_valor(df.loc[i, 'Sódio']),
             )
+            self.stdout.write(self.style.SUCCESS(f'Importado {i + 1}/{tamanho}: {df.loc[i, "Nome"]}'))
         self.stdout.write(self.style.SUCCESS('Importação concluída!'))

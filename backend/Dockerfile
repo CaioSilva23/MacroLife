@@ -29,36 +29,8 @@ COPY . /app/
 # Create staticfiles directory
 RUN mkdir -p /app/staticfiles
 
-# Create entrypoint script
-RUN echo '#!/bin/sh\n\
-set -e\n\
-\n\
-echo "Waiting for database..."\n\
-while ! nc -z db 5432; do\n\
-  sleep 0.1\n\
-done\n\
-echo "Database started"\n\
-\n\
-echo "Running migrations..."\n\
-python manage.py migrate --noinput\n\
-\n\
-echo "Loading TACO data..."\n\
-python manage.py importar_taco || echo "TACO data already loaded or failed to load"\n\
-\n\
-echo "Collecting static files..."\n\
-python manage.py collectstatic --noinput\n\
-\n\
-echo "Starting server..."\n\
-exec "$@"' > /app/entrypoint.sh
-
-# Make entrypoint executable
-RUN chmod +x /app/entrypoint.sh
-
 # Expose port
 EXPOSE 8000
-
-# Set entrypoint
-ENTRYPOINT ["/app/entrypoint.sh"]
 
 # Default command
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
