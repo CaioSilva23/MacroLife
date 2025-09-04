@@ -23,7 +23,7 @@ class AlimentoAPIView(ListAPIView):
         if search:
             qs = qs.filter(nome__icontains=search)
 
-        return qs
+        return qs[:10]
 
 
 class RefeicaoCreateView(APIView):
