@@ -50,8 +50,8 @@ export const alimentosService = {
 // Serviços para Refeições
 export const refeicoesService = {
   // Listar todas as refeições
-  listar: () => {
-    return api.get('/refeicoes/');
+  listar: (data) => {
+    return api.get(`/refeicoes/?data=${data}`);
   },
 
   // Criar nova refeição

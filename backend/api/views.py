@@ -68,7 +68,13 @@ class RefeicaoCreateView(APIView):
         Listar todas as refeições com totais nutricionais.
         """
 
-        refeicoes = RefeicaoSerializer(Refeicao.objects.all(), many=True)
+        data = request.query_params.get('data', None)
+        if data:
+            refeicoes = Refeicao.objects.filter(data_criacao__date=data)
+        else:
+            refeicoes = Refeicao.objects.all()
+
+        refeicoes = RefeicaoSerializer(refeicoes, many=True)
         return Response(refeicoes.data, status=status.HTTP_200_OK)
 
 class RefeicaoDetailView(APIView):
