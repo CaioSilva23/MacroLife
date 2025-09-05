@@ -6,10 +6,9 @@ class UserRenderer(renderers.JSONRenderer):
     charset='utf-8'
 
     def render(self, data, accepted_media_type=None, renderer_context=None):
-        response = ''
         if 'ErrorDetail' in str(data):
             response = json.dumps({'errors': data})
+            return response
         else:
-            response = json.dumps(data)
-
-        return response
+            # Use o renderer padrão do DRF para dados normais
+            return super().render(data, accepted_media_type, renderer_context)

@@ -1,4 +1,5 @@
 from django.db import models
+from user.models import User
 
 class Alimento(models.Model):
     """
@@ -23,6 +24,7 @@ class Refeicao(models.Model):
     """
     Agrupamento de alimentos, como 'Café da manhã', 'Almoço', etc.
     """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
     descricao = models.TextField(blank=True, null=True)
     data_criacao = models.DateTimeField(auto_now_add=True)

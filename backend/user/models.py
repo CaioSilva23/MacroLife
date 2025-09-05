@@ -64,15 +64,17 @@ class UserProfile(models.Model):
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    idade = models.IntegerField()
-    peso = models.FloatField(help_text="Peso em kg")
-    altura = models.FloatField(help_text="Altura em cm")
-    sexo = models.CharField(max_length=1, choices=SEXO_CHOICES)
-    nivel_atividade = models.CharField(max_length=20, choices=NIVEL_ATIVIDADE_CHOICES)
-    objetivo = models.CharField(max_length=20, choices=OBJETIVO_CHOICES)
+    idade = models.IntegerField(null=True, blank=True)
+    peso = models.FloatField(help_text="Peso em kg", null=True, blank=True)
+    altura = models.FloatField(help_text="Altura em cm", null=True, blank=True)
+    sexo = models.CharField(max_length=1, choices=SEXO_CHOICES, null=True, blank=True)
+    nivel_atividade = models.CharField(max_length=20, choices=NIVEL_ATIVIDADE_CHOICES, null=True, blank=True)
+    objetivo = models.CharField(max_length=20, choices=OBJETIVO_CHOICES, null=True, blank=True)
+
+    status = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.email
+        return self.user.name
 
 
 class PlanoAlimentar(models.Model):
@@ -83,4 +85,4 @@ class PlanoAlimentar(models.Model):
     gorduras_diarias = models.FloatField(help_text="Gorduras em gramas")
 
     def __str__(self):
-        return f"Plano Alimentar de {self.profile.user.email}"
+        return f"Plano Alimentar de {self.profile.user.name}"

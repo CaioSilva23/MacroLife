@@ -42,9 +42,7 @@ Thumbs.db
 *.env
 
 # Migrations
-**/migrations/
 **/migrations/*.pyc
-**/migrations/*.py
 
 # Coverage reports
 htmlcov/

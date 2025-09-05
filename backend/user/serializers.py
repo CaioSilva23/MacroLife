@@ -3,7 +3,7 @@ Serializer for user.
 """
 
 from rest_framework import serializers
-from .models import User
+from .models import User, UserProfile, PlanoAlimentar
 from .utils import Util, strong_password
 from django.utils.encoding import smart_str, DjangoUnicodeDecodeError  # noqa: E501
 from django.utils.http import urlsafe_base64_decode
@@ -43,11 +43,28 @@ class UserLoginSerializer(serializers.ModelSerializer):
         fields = ['email', 'password']
 
 
+class PlanoAlimentarSerializer(serializers.ModelSerializer):
+    """Plano alimentar serializer"""
+    class Meta:
+        model = PlanoAlimentar
+        fields = ['calorias_diarias', 'proteinas_diarias', 'gorduras_diarias', 'carboidratos_diarios']
+
 class UserProfileSerializer(serializers.ModelSerializer):
     """User serializer profile"""
+    macros = serializers.SerializerMethodField(read_only=True)
+    name = serializers.CharField(source='user.name', read_only=True)
+    email = serializers.EmailField(source='user.email', read_only=True)
+    
     class Meta:
-        model = User
-        fields = ['id', 'email', 'name']
+        model = UserProfile
+        fields = ['name', 'email', 'idade', 'peso', 'altura', 'objetivo', 'sexo', 'status', 'nivel_atividade', 'macros']
+        read_only_fields = ['name', 'email']
+
+    def get_macros(self, obj):
+        plano = PlanoAlimentar.objects.filter(profile=obj).last()
+        if plano:
+            return PlanoAlimentarSerializer(plano).data
+        return None
 
 
 class UserChangePasswordSerializer(serializers.Serializer):
@@ -103,3 +120,4 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
             return attrs
         else:
             raise serializers.ValidationError('You are not a Registered User')
+
