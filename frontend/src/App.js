@@ -10,36 +10,33 @@ import './App.css';
 // Criar tema do Material-UI
 const theme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: 'light',
     primary: {
-      main: '#80EF80',
-      dark: '#66CC66',
-      light: '#99FF99',
+      main: '#4CAF50',
+      light: '#81C784',
+      dark: '#388E3C',
     },
     secondary: {
-      main: '#80EF80',
-      dark: '#66CC66',
-      light: '#99FF99',
+      main: '#FF9800',
+      light: '#FFB74D',
+      dark: '#F57C00',
+    },
+    warning: {
+      main: '#FFC107',
+      light: '#FFD54F',
+      dark: '#FFA000',
     },
     background: {
-      default: '#010409',
-      paper: '#0D1117',
+      default: '#F5F5F5',
+      paper: '#FFFFFF',
     },
     text: {
-      primary: '#ffffff',
-      secondary: '#80EF80',
+      primary: '#333333',
+      secondary: 'rgba(51, 51, 51, 0.7)',
     },
   },
-  transitions: {
-    duration: {
-      shortest: 150,
-      shorter: 200,
-      short: 250,
-      standard: 300,
-      complex: 375,
-      enteringScreen: 225,
-      leavingScreen: 195,
-    },
+  typography: {
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
   },
 });
 

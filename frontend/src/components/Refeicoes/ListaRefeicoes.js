@@ -113,7 +113,7 @@ const ListaRefeicoes = () => {
       text: "Você não poderá reverter isso!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#80EF80",
+      confirmButtonColor: "#4CAF50",
       cancelButtonColor: "#d33",
       confirmButtonText: "Sim, deletar!",
     }).then((result) => {
@@ -220,18 +220,18 @@ const ListaRefeicoes = () => {
   return (
     <Container maxWidth="xl" sx={{ py: 2 }}>
       {/* Header */}
-      <Paper elevation={0} sx={{ p: 3, mb: 3, borderRadius: 2, background: 'linear-gradient(135deg, #0D1117 0%, #010409 100%)', border: '1px solid #80EF80' }}>
+      <Paper elevation={0} sx={{ p: 3, mb: 3, borderRadius: 2, background: 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)', border: '1px solid #E0E0E0', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center" gap={2}>
-            <Avatar sx={{ bgcolor: '#80EF80', color: '#010409',  width: 64, height: 64  }}>
+            <Avatar sx={{ bgcolor: '#FFFFFF', color: '#4CAF50',  width: 64, height: 64  }}>
               <Restaurant fontSize="large" />
             </Avatar>
             <Box>
-              <Typography variant="h4" component="h1" sx={{ color: '#80EF80', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1.5 }}>
+              <Typography variant="h4" component="h1" sx={{ color: '#FFFFFF', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <LocalDining />
                 Minhas Refeições
               </Typography>
-              <Typography variant="subtitle1" sx={{ color: 'rgba(255,255,255,0.8)' }}>
+              <Typography variant="subtitle1" sx={{ color: 'rgba(255,255,255,0.9)' }}>
                 Gerencie suas refeições personalizadas
               </Typography>
               {/* Estatísticas rápidas */}
@@ -240,9 +240,9 @@ const ListaRefeicoes = () => {
                   size="small" 
                   label={`${refeicoes.length} ${refeicoes.length === 1 ? 'refeição' : 'refeições'}`}
                   sx={{ 
-                    bgcolor: 'rgba(128, 239, 128, 0.2)', 
-                    color: '#80EF80',
-                    border: '1px solid #80EF80',
+                    bgcolor: 'rgba(255, 193, 7, 0.2)', 
+                    color: '#FFC107',
+                    border: '1px solid #FFC107',
                     fontSize: '0.75rem'
                   }}
                 />
@@ -251,9 +251,9 @@ const ListaRefeicoes = () => {
                     size="small" 
                     label={`${refeicoes.reduce((acc, r) => acc + r.total_kcal, 0).toFixed(0)} kcal total`}
                     sx={{ 
-                      bgcolor: 'rgba(128, 239, 128, 0.1)', 
-                      color: '#80EF80',
-                      border: '1px solid #80EF80',
+                      bgcolor: 'rgba(255, 193, 7, 0.1)', 
+                      color: '#FFC107',
+                      border: '1px solid #FFC107',
                       fontSize: '0.75rem'
                     }}
                   />
@@ -266,14 +266,14 @@ const ListaRefeicoes = () => {
             onClick={() => navigate('/refeicoes/novo')}
             startIcon={<Add />}
             sx={{ 
-              bgcolor: '#80EF80', 
-              color: '#010409',
+              bgcolor: '#4CAF50', 
+              color: '#FFFFFF',
               borderRadius: 2,
               fontWeight: 'bold',
               '&:hover': {
-                bgcolor: '#66CC66',
+                bgcolor: '#388E3C',
                 transform: 'translateY(-2px)',
-                boxShadow: '0 4px 12px rgba(128, 239, 128, 0.3)'
+                boxShadow: '0 4px 12px rgba(76, 175, 80, 0.3)'
               },
               transition: 'all 0.3s ease'
             }}
@@ -291,10 +291,10 @@ const ListaRefeicoes = () => {
           bottom: 16,
           right: 16,
           display: { xs: 'flex', sm: 'none' },
-          background: 'linear-gradient(45deg, #80EF80 30%, #66CC66 90%)',
-          color: '#010409',
+          background: 'linear-gradient(45deg, #4CAF50 30%, #388E3C 90%)',
+          color: '#FFFFFF',
           '&:hover': {
-            background: 'linear-gradient(45deg, #66CC66 30%, #4CAF50 90%)',
+            background: 'linear-gradient(45deg, #388E3C 30%, #2E7D32 90%)',
           }
         }}
       >
@@ -302,17 +302,17 @@ const ListaRefeicoes = () => {
       </Fab>
 
       {/* Filtro de Data */}
-      <Paper elevation={2} sx={{ p: 3, mb: 3, borderRadius: 2, bgcolor: '#0D1117', border: '1px solid #80EF80' }}>
+      <Paper elevation={2} sx={{ p: 3, mb: 3, borderRadius: 2, bgcolor: '#FFFFFF', border: '1px solid #E0E0E0', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
         <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={2}>
           <Box display="flex" alignItems="center" gap={2}>
-            <Avatar sx={{ bgcolor: '#80EF80', color: '#010409' }}>
+            <Avatar sx={{ bgcolor: '#4CAF50', color: '#FFFFFF' }}>
               <FilterList />
             </Avatar>
             <Box>
-              <Typography variant="h6" fontWeight="600" color="#80EF80">
+              <Typography variant="h6" fontWeight="600" color="#333333">
                 Filtrar por Data
               </Typography>
-              <Typography variant="body2" color="rgba(255,255,255,0.7)">
+              <Typography variant="body2" color="rgba(51,51,51,0.7)">
                 Visualize refeições de uma data específica
               </Typography>
             </Box>
@@ -327,11 +327,11 @@ const ListaRefeicoes = () => {
               sx={{ 
                 minWidth: 'auto', 
                 px: 1,
-                color: '#80EF80',
-                borderColor: '#80EF80',
+                color: '#4CAF50',
+                borderColor: '#4CAF50',
                 '&:hover': {
-                  borderColor: '#80EF80',
-                  backgroundColor: 'rgba(128, 239, 128, 0.04)'
+                  borderColor: '#388E3C',
+                  backgroundColor: 'rgba(76, 175, 80, 0.04)'
                 }
               }}
             >
@@ -347,21 +347,21 @@ const ListaRefeicoes = () => {
                 minWidth: '150px',
                 '& .MuiOutlinedInput-root': {
                   borderRadius: 2,
-                  backgroundColor: '#0D1117',
-                  border: '1px solid #80EF80',
-                  color: '#ffffff',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #E0E0E0',
+                  color: '#333333',
                   '&:hover': {
-                    borderColor: '#80EF80',
+                    borderColor: '#4CAF50',
                   },
                   '&.Mui-focused': {
-                    borderColor: '#80EF80',
+                    borderColor: '#4CAF50',
                   }
                 },
                 '& .MuiInputLabel-root': {
-                  color: '#80EF80',
+                  color: '#4CAF50',
                 },
                 '& input': {
-                  color: '#ffffff',
+                  color: '#333333',
                 }
               }}
               InputLabelProps={{
@@ -376,11 +376,11 @@ const ListaRefeicoes = () => {
               sx={{ 
                 minWidth: 'auto', 
                 px: 1,
-                color: '#80EF80',
-                borderColor: '#80EF80',
+                color: '#4CAF50',
+                borderColor: '#4CAF50',
                 '&:hover': {
-                  borderColor: '#80EF80',
-                  backgroundColor: 'rgba(128, 239, 128, 0.04)'
+                  borderColor: '#388E3C',
+                  backgroundColor: 'rgba(76, 175, 80, 0.04)'
                 }
               }}
             >
@@ -396,10 +396,10 @@ const ListaRefeicoes = () => {
                 borderRadius: 2,
                 ml: 1,
                 textTransform: 'none',
-                backgroundColor: '#80EF80',
-                color: '#010409',
+                backgroundColor: '#4CAF50',
+                color: '#FFFFFF',
                 '&:hover': {
-                  backgroundColor: '#66CC66',
+                  backgroundColor: '#388E3C',
                 }
               }}
             >
@@ -435,26 +435,26 @@ const ListaRefeicoes = () => {
 
       {/* Resumo Nutricional Geral */}
       {refeicoes.length > 0 && (
-        <Card elevation={2} sx={{ mb: 3, borderRadius: 2, bgcolor: '#0D1117', border: '1px solid #80EF80' }}>
+        <Card elevation={2} sx={{ mb: 3, borderRadius: 2, bgcolor: '#FFFFFF', border: '1px solid #E0E0E0', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
           <CardHeader
             avatar={
-              <Avatar sx={{ bgcolor: '#80EF80', color: '#010409' }}>
+              <Avatar sx={{ bgcolor: '#4CAF50', color: '#FFFFFF' }}>
                 <FitnessCenter />
               </Avatar>
             }
             title="Resumo Nutricional Geral"
-            titleTypographyProps={{ variant: 'h6', fontWeight: 'bold', color: '#80EF80' }}
+            titleTypographyProps={{ variant: 'h6', fontWeight: 'bold', color: '#333333' }}
             subheader={`Totais de ${refeicoes.length} ${refeicoes.length === 1 ? 'refeição' : 'refeições'}`}
-            subheaderTypographyProps={{ color: 'rgba(255,255,255,0.7)' }}
+            subheaderTypographyProps={{ color: 'rgba(51,51,51,0.7)' }}
           />
           <CardContent sx={{ pt: 0 }}>
             <Grid container spacing={2}>
               <Grid item xs={6} sm={3}>
-                <Box textAlign="center" sx={{ p: 2, bgcolor: '#0D1117', borderRadius: 2, border: '1px solid #80EF80' }}>
-                  <Typography variant="h4" color="#80EF80" fontWeight="bold">
+                <Box textAlign="center" sx={{ p: 2, bgcolor: '#FFFFFF', borderRadius: 2, border: '1px solid #E0E0E0', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+                  <Typography variant="h4" color="#4CAF50" fontWeight="bold">
                     {totaisGerais.kcal.toFixed(0)}
                   </Typography>
-                  <Typography variant="body2" color="rgba(255,255,255,0.7)" gutterBottom>
+                  <Typography variant="body2" color="rgba(51,51,51,0.7)" gutterBottom>
                     Calorias
                   </Typography>
                   <LinearProgress 
@@ -464,24 +464,24 @@ const ListaRefeicoes = () => {
                       height: 6, 
                       borderRadius: 3, 
                       mb: 0.5,
-                      bgcolor: 'rgba(128, 239, 128, 0.1)',
+                      bgcolor: 'rgba(76, 175, 80, 0.1)',
                       '& .MuiLinearProgress-bar': {
-                        bgcolor: '#80EF80',
+                        bgcolor: '#4CAF50',
                       }
                     }}
                   />
-                  <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                  <Typography variant="caption" color="rgba(51,51,51,0.7)">
                     {progressoNutricional.kcal.toFixed(0)}% da meta diária
                   </Typography>
                 </Box>
               </Grid>
               
               <Grid item xs={6} sm={3}>
-                <Box textAlign="center" sx={{ p: 2, bgcolor: '#0D1117', borderRadius: 2, border: '1px solid #80EF80' }}>
-                  <Typography variant="h4" color="#80EF80" fontWeight="bold">
+                <Box textAlign="center" sx={{ p: 2, bgcolor: '#FFFFFF', borderRadius: 2, border: '1px solid #E0E0E0', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+                  <Typography variant="h4" color="#FF9800" fontWeight="bold">
                     {totaisGerais.carbo.toFixed(1)}
                   </Typography>
-                  <Typography variant="body2" color="rgba(255,255,255,0.7)" gutterBottom>
+                  <Typography variant="body2" color="rgba(51,51,51,0.7)" gutterBottom>
                     Carboidratos (g)
                   </Typography>
                   <LinearProgress 
@@ -491,24 +491,24 @@ const ListaRefeicoes = () => {
                       height: 6, 
                       borderRadius: 3, 
                       mb: 0.5,
-                      bgcolor: 'rgba(128, 239, 128, 0.1)',
+                      bgcolor: 'rgba(255, 152, 0, 0.1)',
                       '& .MuiLinearProgress-bar': {
-                        bgcolor: '#80EF80',
+                        bgcolor: '#FF9800',
                       }
                     }}
                   />
-                  <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                  <Typography variant="caption" color="rgba(51,51,51,0.7)">
                     {progressoNutricional.carbo.toFixed(0)}% da meta diária
                   </Typography>
                 </Box>
               </Grid>
               
               <Grid item xs={6} sm={3}>
-                <Box textAlign="center" sx={{ p: 2, bgcolor: '#0D1117', borderRadius: 2, border: '1px solid #80EF80' }}>
-                  <Typography variant="h4" color="#80EF80" fontWeight="bold">
+                <Box textAlign="center" sx={{ p: 2, bgcolor: '#FFFFFF', borderRadius: 2, border: '1px solid #E0E0E0', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+                  <Typography variant="h4" color="#FFC107" fontWeight="bold">
                     {totaisGerais.proteina.toFixed(1)}
                   </Typography>
-                  <Typography variant="body2" color="rgba(255,255,255,0.7)" gutterBottom>
+                  <Typography variant="body2" color="rgba(51,51,51,0.7)" gutterBottom>
                     Proteínas (g)
                   </Typography>
                   <LinearProgress 
@@ -518,24 +518,24 @@ const ListaRefeicoes = () => {
                       height: 6, 
                       borderRadius: 3, 
                       mb: 0.5,
-                      bgcolor: 'rgba(128, 239, 128, 0.1)',
+                      bgcolor: 'rgba(255, 193, 7, 0.1)',
                       '& .MuiLinearProgress-bar': {
-                        bgcolor: '#80EF80',
+                        bgcolor: '#FFC107',
                       }
                     }}
                   />
-                  <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                  <Typography variant="caption" color="rgba(51,51,51,0.7)">
                     {progressoNutricional.proteina.toFixed(0)}% da meta diária
                   </Typography>
                 </Box>
               </Grid>
               
               <Grid item xs={6} sm={3}>
-                <Box textAlign="center" sx={{ p: 2, bgcolor: '#0D1117', borderRadius: 2, border: '1px solid #80EF80' }}>
-                  <Typography variant="h4" color="#80EF80" fontWeight="bold">
+                <Box textAlign="center" sx={{ p: 2, bgcolor: '#FFFFFF', borderRadius: 2, border: '1px solid #E0E0E0', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+                  <Typography variant="h4" color="#FF9800" fontWeight="bold">
                     {totaisGerais.gordura.toFixed(1)}
                   </Typography>
-                  <Typography variant="body2" color="rgba(255,255,255,0.7)" gutterBottom>
+                  <Typography variant="body2" color="rgba(51,51,51,0.7)" gutterBottom>
                     Gorduras (g)
                   </Typography>
                   <LinearProgress 
@@ -545,13 +545,13 @@ const ListaRefeicoes = () => {
                       height: 6, 
                       borderRadius: 3, 
                       mb: 0.5,
-                      bgcolor: 'rgba(128, 239, 128, 0.1)',
+                      bgcolor: 'rgba(255, 152, 0, 0.1)',
                       '& .MuiLinearProgress-bar': {
-                        bgcolor: '#80EF80',
+                        bgcolor: '#FF9800',
                       }
                     }}
                   />
-                  <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                  <Typography variant="caption" color="rgba(51,51,51,0.7)">
                     {progressoNutricional.gordura.toFixed(0)}% da meta diária
                   </Typography>
                 </Box>
@@ -568,21 +568,21 @@ const ListaRefeicoes = () => {
       ) :  */}
 
       {refeicoes.length === 0 ? (
-        <Paper elevation={2} sx={{ p: 6, textAlign: 'center', borderRadius: 2, bgcolor: '#0D1117', border: '1px solid #80EF80' }}>
+        <Paper elevation={2} sx={{ p: 6, textAlign: 'center', borderRadius: 2, bgcolor: '#FFFFFF', border: '1px solid #E0E0E0', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
           <Avatar sx={{ 
             width: 100, 
             height: 100, 
             mx: 'auto', 
             mb: 3, 
-            bgcolor: '#80EF80',
-            color: '#010409'
+            bgcolor: '#4CAF50',
+            color: '#FFFFFF'
           }}>
             <FastfoodOutlined sx={{ fontSize: 60 }} />
           </Avatar>
-          <Typography variant="h5" gutterBottom color="#80EF80">
+          <Typography variant="h5" gutterBottom color="#333333">
             Nenhuma refeição cadastrada
           </Typography>
-          <Typography variant="body1" color="rgba(255,255,255,0.7)" sx={{ mb: 3 }}>
+          <Typography variant="body1" color="rgba(51,51,51,0.7)" sx={{ mb: 3 }}>
             Comece criando sua primeira refeição personalizada
           </Typography>
           <Button
@@ -592,9 +592,9 @@ const ListaRefeicoes = () => {
             size="large"
             sx={{
               borderRadius: 2,
-              background: 'linear-gradient(45deg, #80EF80 30%, #66CC66 90%)',
-              color: '#010409',
-              boxShadow: '0 3px 5px 2px rgba(128, 239, 128, .3)',
+              background: 'linear-gradient(45deg, #4CAF50 30%, #388E3C 90%)',
+              color: '#FFFFFF',
+              boxShadow: '0 3px 5px 2px rgba(76, 175, 80, .3)',
             }}
           >
             Criar Primeira Refeição
@@ -623,31 +623,31 @@ const ListaRefeicoes = () => {
                 }}
               >
               <AccordionSummary
-                expandIcon={<ExpandMore sx={{ color: '#80EF80' }} />}
+                expandIcon={<ExpandMore sx={{ color: '#4CAF50' }} />}
                 sx={{
                   borderRadius: '12px',
                   minHeight: 70,
-                  backgroundColor: '#0D1117',
-                  border: '1px solid #80EF80',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #E0E0E0',
                   '&.Mui-expanded': {
                     borderBottomLeftRadius: 0,
                     borderBottomRightRadius: 0,
-                    backgroundColor: '#0D1117',
-                    borderColor: '#80EF80',
+                    backgroundColor: '#FFFFFF',
+                    borderColor: '#4CAF50',
                   },
                   '& .MuiAccordionSummary-content': {
                     alignItems: 'center',
                     margin: '12px 0',
                   },
                   '&:hover': {
-                    backgroundColor: '#010409',
+                    backgroundColor: '#F5F5F5',
                   }
                 }}
               >
                 <Box display="flex" alignItems="center" justifyContent="space-between" width="100%" sx={{ pr: 2 }}>
                   {/* Nome da refeição e alimentos */}
                   <Box sx={{ minWidth: 0, flex: 1, mr: 2 }}>
-                    <Typography variant="h6" fontWeight="600" sx={{ fontSize: '1.1rem', mb: 0.5, color: '#80EF80' }}>
+                    <Typography variant="h6" fontWeight="600" sx={{ fontSize: '1.1rem', mb: 0.5, color: '#333333' }}>
                       {refeicao.nome}
                     </Typography>
                     {/* <Typography variant="body2" color="text.secondary" sx={{ 
@@ -663,14 +663,14 @@ const ListaRefeicoes = () => {
                   
                   {/* Informações nutricionais */}
                   <Box display="flex" alignItems="center" gap={{ xs: 1, sm: 2 }} sx={{ flex: '0 0 auto', flexWrap: 'wrap' }}>
-                    <Typography variant="body2" color="rgba(255,255,255,0.7)" sx={{ 
+                    <Typography variant="body2" color="rgba(51,51,51,0.7)" sx={{ 
                       whiteSpace: 'nowrap',
                       display: { xs: 'none', sm: 'block' }
                     }}>
                       {refeicao.itens.length} {refeicao.itens.length === 1 ? 'alimento' : 'alimentos'}
                     </Typography>
                     
-                    <Typography variant="body2" color="#80EF80" sx={{ 
+                    <Typography variant="body2" color="#FF9800" sx={{ 
                       whiteSpace: 'nowrap', 
                       fontWeight: '500',
                       fontSize: { xs: '0.75rem', sm: '0.875rem' }
@@ -678,7 +678,7 @@ const ListaRefeicoes = () => {
                       {parseFloat(refeicao.total_carbo).toFixed(1)}g carbo
                     </Typography>
                     
-                    <Typography variant="body2" color="#80EF80" sx={{ 
+                    <Typography variant="body2" color="#FF9800" sx={{ 
                       whiteSpace: 'nowrap', 
                       fontWeight: '500',
                       fontSize: { xs: '0.75rem', sm: '0.875rem' }
@@ -686,7 +686,7 @@ const ListaRefeicoes = () => {
                       {parseFloat(refeicao.total_gordura).toFixed(1)}g gord
                     </Typography>
                     
-                    <Typography variant="body2" color="success.main" sx={{ 
+                    <Typography variant="body2" color="#FFC107" sx={{ 
                       whiteSpace: 'nowrap', 
                       fontWeight: '500',
                       fontSize: { xs: '0.75rem', sm: '0.875rem' }
@@ -694,7 +694,7 @@ const ListaRefeicoes = () => {
                       {parseFloat(refeicao.total_proteina).toFixed(1)}g prot
                     </Typography>
                     
-                    <Typography variant="h6" color="primary.main" sx={{ 
+                    <Typography variant="h6" color="#4CAF50" sx={{ 
                       fontWeight: 'bold', 
                       whiteSpace: 'nowrap',
                       fontSize: { xs: '1rem', sm: '1.25rem' }
@@ -706,74 +706,74 @@ const ListaRefeicoes = () => {
               </AccordionSummary>
               
               <AccordionDetails sx={{ pt: 0, pb: 2 }}>
-                <Box sx={{ backgroundColor: '#0D1117', p: 3, borderRadius: 2, border: '1px solid #80EF80' }}>
+                <Box sx={{ backgroundColor: '#FFFFFF', p: 3, borderRadius: 2, border: '1px solid #E0E0E0', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
                   {/* Descrição da Refeição */}
                   {refeicao.descricao && (
-                    <Box sx={{ mb: 3, p: 2, bgcolor: '#010409', borderRadius: 2, border: '1px solid #80EF80' }}>
-                      <Typography variant="body2" color="rgba(255,255,255,0.7)" sx={{ fontStyle: 'italic' }}>
+                    <Box sx={{ mb: 3, p: 2, bgcolor: '#F5F5F5', borderRadius: 2, border: '1px solid #E0E0E0' }}>
+                      <Typography variant="body2" color="rgba(51,51,51,0.7)" sx={{ fontStyle: 'italic' }}>
                         "{refeicao.descricao}"
                       </Typography>
                     </Box>
                   )}
 
                   {/* Título da seção */}
-                  <Typography variant="h6" sx={{ mb: 2, color: '#80EF80', fontWeight: '600', display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography variant="h6" sx={{ mb: 2, color: '#333333', fontWeight: '600', display: 'flex', alignItems: 'center', gap: 1 }}>
                     <Restaurant fontSize="small" />
                     Detalhes dos Alimentos ({refeicao.itens.length})
                   </Typography>
                   
                   {/* Versão Desktop - Tabela */}
                   <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                    <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 2, mb: 3, bgcolor: '#0D1117', border: '1px solid #80EF80' }}>
+                    <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 2, mb: 3, bgcolor: '#FFFFFF', border: '1px solid #E0E0E0' }}>
                       <Table size="small">
                         <TableHead>
-                          <TableRow sx={{ bgcolor: '#010409' }}>
-                            <TableCell sx={{ fontWeight: 'bold', color: '#80EF80', borderBottom: '1px solid #80EF80' }}>Alimento</TableCell>
-                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#80EF80', borderBottom: '1px solid #80EF80' }}>Quantidade</TableCell>
-                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#80EF80', borderBottom: '1px solid #80EF80' }}>Calorias</TableCell>
-                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#80EF80', borderBottom: '1px solid #80EF80' }}>Carbo</TableCell>
-                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#80EF80', borderBottom: '1px solid #80EF80' }}>Proteína</TableCell>
-                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#80EF80', borderBottom: '1px solid #80EF80' }}>Gordura</TableCell>
+                          <TableRow sx={{ bgcolor: '#F5F5F5' }}>
+                            <TableCell sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Alimento</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Quantidade</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Calorias</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Carbo</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Proteína</TableCell>
+                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Gordura</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {refeicao.itens.map((item, index) => (
-                            <TableRow key={index} hover sx={{ '&:hover': { bgcolor: '#010409' } }}>
-                              <TableCell sx={{ borderBottom: '1px solid rgba(128, 239, 128, 0.2)' }}>
+                            <TableRow key={index} hover sx={{ '&:hover': { bgcolor: '#F5F5F5' } }}>
+                              <TableCell sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
                                 <Box display="flex" alignItems="center" gap={1.5}>
-                                  <Avatar sx={{ width: 32, height: 32, bgcolor: '#80EF80', color: '#010409' }}>
+                                  <Avatar sx={{ width: 32, height: 32, bgcolor: '#4CAF50', color: '#FFFFFF' }}>
                                     <Kitchen fontSize="small" />
                                   </Avatar>
-                                  <Typography variant="body2" fontWeight="500" color="#ffffff">
+                                  <Typography variant="body2" fontWeight="500" color="#333333">
                                     {item.alimento_nome}
                                   </Typography>
                                 </Box>
                               </TableCell>
-                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(128, 239, 128, 0.2)' }}>
+                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
                                 <Chip 
                                   label={`${item.quantidade_g}g`} 
                                   size="small" 
                                   variant="outlined"
-                                  sx={{ color: '#80EF80', borderColor: '#80EF80' }}
+                                  sx={{ color: '#4CAF50', borderColor: '#4CAF50' }}
                                 />
                               </TableCell>
-                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(128, 239, 128, 0.2)' }}>
-                                <Typography variant="body2" fontWeight="500" color="#80EF80">
+                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
+                                <Typography variant="body2" fontWeight="500" color="#4CAF50">
                                   {item.kcal_total.toFixed(1)}
                                 </Typography>
                               </TableCell>
-                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(128, 239, 128, 0.2)' }}>
-                                <Typography variant="body2" color="#80EF80">
+                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
+                                <Typography variant="body2" color="#FF9800">
                                   {item.carbo_total.toFixed(1)}g
                                 </Typography>
                               </TableCell>
-                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(128, 239, 128, 0.2)' }}>
-                                <Typography variant="body2" color="#80EF80">
+                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
+                                <Typography variant="body2" color="#FFC107">
                                   {item.proteina_total.toFixed(1)}g
                                 </Typography>
                               </TableCell>
-                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(128, 239, 128, 0.2)' }}>
-                                <Typography variant="body2" color="#80EF80">
+                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
+                                <Typography variant="body2" color="#FF9800">
                                   {item.gordura_total.toFixed(1)}g
                                 </Typography>
                               </TableCell>
@@ -789,18 +789,18 @@ const ListaRefeicoes = () => {
                     <Grid container spacing={2}>
                       {refeicao.itens.map((item, index) => (
                         <Grid item xs={12} key={index}>
-                          <Card variant="outlined" sx={{ borderRadius: 2, bgcolor: '#0D1117', border: '1px solid #80EF80' }}>
+                          <Card variant="outlined" sx={{ borderRadius: 2, bgcolor: '#FFFFFF', border: '1px solid #E0E0E0' }}>
                             <CardContent sx={{ p: 2 }}>
                               <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
                                 <Box display="flex" alignItems="center" gap={1.5} flex={1}>
-                                  <Avatar sx={{ width: 36, height: 36, bgcolor: '#80EF80', color: '#010409' }}>
+                                  <Avatar sx={{ width: 36, height: 36, bgcolor: '#4CAF50', color: '#FFFFFF' }}>
                                     <Kitchen fontSize="small" />
                                   </Avatar>
                                   <Box flex={1}>
-                                    <Typography variant="body1" fontWeight="600" noWrap color="#ffffff">
+                                    <Typography variant="body1" fontWeight="600" noWrap color="#333333">
                                       {item.alimento.nome}
                                     </Typography>
-                                    <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                                    <Typography variant="caption" color="rgba(51,51,51,0.7)">
                                       {item.quantidade_g}g
                                     </Typography>
                                   </Box>
@@ -809,40 +809,40 @@ const ListaRefeicoes = () => {
                               <Grid container spacing={1}>
                                 <Grid item xs={3}>
                                   <Box textAlign="center">
-                                    <Typography variant="h6" color="#80EF80" fontWeight="bold">
+                                    <Typography variant="h6" color="#4CAF50" fontWeight="bold">
                                       {item.kcal_total.toFixed(0)}
                                     </Typography>
-                                    <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                                    <Typography variant="caption" color="rgba(51,51,51,0.7)">
                                       kcal
                                     </Typography>
                                   </Box>
                                 </Grid>
                                 <Grid item xs={3}>
                                   <Box textAlign="center">
-                                    <Typography variant="h6" color="#80EF80" fontWeight="bold">
+                                    <Typography variant="h6" color="#FF9800" fontWeight="bold">
                                       {item.carbo_total.toFixed(1)}
                                     </Typography>
-                                    <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                                    <Typography variant="caption" color="rgba(51,51,51,0.7)">
                                       carbo
                                     </Typography>
                                   </Box>
                                 </Grid>
                                 <Grid item xs={3}>
                                   <Box textAlign="center">
-                                    <Typography variant="h6" color="#80EF80" fontWeight="bold">
+                                    <Typography variant="h6" color="#FFC107" fontWeight="bold">
                                       {item.proteina_total.toFixed(1)}
                                     </Typography>
-                                    <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                                    <Typography variant="caption" color="rgba(51,51,51,0.7)">
                                       prot
                                     </Typography>
                                   </Box>
                                 </Grid>
                                 <Grid item xs={3}>
                                   <Box textAlign="center">
-                                    <Typography variant="h6" color="#80EF80" fontWeight="bold">
+                                    <Typography variant="h6" color="#FF9800" fontWeight="bold">
                                       {item.gordura_total.toFixed(1)}
                                     </Typography>
-                                    <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                                    <Typography variant="caption" color="rgba(51,51,51,0.7)">
                                       gord
                                     </Typography>
                                   </Box>
@@ -856,8 +856,8 @@ const ListaRefeicoes = () => {
                   </Box>
 
                   {/* Ações */}
-                  <Box display="flex" justifyContent="space-between" alignItems="center" mt={3} pt={2} sx={{ borderTop: '1px solid #80EF80' }}>
-                    <Typography variant="caption" color="rgba(255,255,255,0.7)" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Box display="flex" justifyContent="space-between" alignItems="center" mt={3} pt={2} sx={{ borderTop: '1px solid #E0E0E0' }}>
+                    <Typography variant="caption" color="rgba(51,51,51,0.7)" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <CalendarToday fontSize="small" />
                       Criado em {formatarData(refeicao.data_criacao)}
                     </Typography>

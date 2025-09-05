@@ -26,10 +26,32 @@ export default function Header({ refeicoes, onCriarRefeicao }) {
             <Restaurant fontSize="large" />
         </Avatar>
         <Box>
-            <Typography variant="h4" component="h1" sx={{ color: '#80EF80', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1.5 }}>
-            <LocalDining />
-            Minhas Refeições
-            </Typography>
+                  <AppBar 
+        position="static" 
+        sx={{ 
+          background: 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)',
+          boxShadow: '0 4px 8px rgba(76, 175, 80, 0.3)',
+        }}
+      >
+        <Toolbar>
+          <Typography 
+            variant="h4" 
+            component="h1" 
+            sx={{ 
+              flexGrow: 1, 
+              fontWeight: 'bold',
+              color: '#FFFFFF',
+              textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1
+            }}
+          >
+            <Restaurant sx={{ fontSize: '2rem', color: '#FFC107' }} />
+            NutriApp
+          </Typography>
+        </Toolbar>
+      </AppBar>
             <Typography variant="subtitle1" sx={{ color: 'rgba(255,255,255,0.8)' }}>
             Gerencie suas refeições personalizadas
             </Typography>

@@ -62,7 +62,7 @@ export const RefeicoesSkeleton = () => {
           <Grid container spacing={2}>
             {[1, 2, 3, 4].map((item) => (
               <Grid item xs={6} sm={3} key={item}>
-                <Box textAlign="center" sx={{ p: 2, bgcolor: '#0D1117', borderRadius: 2, border: '1px solid #80EF80' }}>
+                <Box textAlign="center" sx={{ p: 2, bgcolor: '#FFFFFF', borderRadius: 2, border: '1px solid #E0E0E0', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
                   <Skeleton variant="text" width={60} height={40} sx={{ mx: 'auto' }} />
                   <Skeleton variant="text" width={80} height={20} sx={{ mx: 'auto' }} />
                   <Skeleton variant="rounded" width="100%" height={6} sx={{ my: 1 }} />

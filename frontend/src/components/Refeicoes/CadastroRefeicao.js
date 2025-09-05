@@ -190,14 +190,14 @@ const CadastroRefeicao = () => {
   return (
     <Container maxWidth="xl" sx={{ py: 2 }}>
       {/* Header */}
-      <Paper elevation={0} sx={{ p: 3, mb: 3, borderRadius: 2, background: 'linear-gradient(135deg, #0D1117 0%, #010409 100%)', border: '1px solid #80EF80' }}>
+      <Paper elevation={0} sx={{ p: 3, mb: 3, borderRadius: 2, background: 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)', border: '1px solid #E0E0E0', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
         <Box display="flex" justifyContent="space-between" alignItems="center" >
           <Box display="flex" alignItems="center" gap={2}>
-            <Avatar sx={{ bgcolor: '#80EF80', color: '#010409', width: 64, height: 64 }}>
+            <Avatar sx={{ bgcolor: '#FFFFFF', color: '#4CAF50', width: 64, height: 64 }}>
               <Restaurant fontSize="large" />
             </Avatar>
             <Box>
-              <Typography variant="h4" component="h1" sx={{ color: '#80EF80', fontWeight: 'bold', mb: 1 }}>
+              <Typography variant="h4" component="h1" sx={{ color: '#FFFFFF', fontWeight: 'bold', mb: 1 }}>
                 Nova Refeição
               </Typography>
               <Typography variant="subtitle1" sx={{ color: 'rgba(255,255,255,0.9)', mb: 2 }}>
@@ -209,9 +209,9 @@ const CadastroRefeicao = () => {
                   size="small" 
                   label={nome ? '✓ Nome definido' : '1. Nome da refeição'} 
                   sx={{ 
-                    bgcolor: nome ? 'rgba(128, 239, 128, 0.3)' : 'rgba(255,255,255,0.2)', 
-                    color: '#80EF80',
-                    border: '1px solid #80EF80',
+                    bgcolor: nome ? 'rgba(255, 193, 7, 0.2)' : 'rgba(255,255,255,0.2)', 
+                    color: '#FFC107',
+                    border: '1px solid #FFC107',
                     fontSize: '0.75rem',
                     fontWeight: '500'
                   }}
@@ -220,9 +220,9 @@ const CadastroRefeicao = () => {
                   size="small" 
                   label={itensRefeicao.length > 0 ? `✓ ${itensRefeicao.length} alimentos` : '2. Adicionar alimentos'} 
                   sx={{ 
-                    bgcolor: itensRefeicao.length > 0 ? 'rgba(128, 239, 128, 0.3)' : 'rgba(255,255,255,0.2)', 
-                    color: '#80EF80',
-                    border: '1px solid #80EF80',
+                    bgcolor: itensRefeicao.length > 0 ? 'rgba(255, 193, 7, 0.2)' : 'rgba(255,255,255,0.2)', 
+                    color: '#FFC107',
+                    border: '1px solid #FFC107',
                     fontSize: '0.75rem',
                     fontWeight: '500'
                   }}
@@ -236,13 +236,13 @@ const CadastroRefeicao = () => {
             startIcon={<ArrowBack />}
             size="large"
             sx={{ 
-              color: '#80EF80', 
-              borderColor: '#80EF80',
+              color: '#FFFFFF', 
+              borderColor: '#FFFFFF',
               borderRadius: 2,
               fontWeight: '500',
               '&:hover': {
-                borderColor: '#80EF80',
-                backgroundColor: 'rgba(128, 239, 128, 0.1)'
+                borderColor: '#FFC107',
+                backgroundColor: 'rgba(255, 193, 7, 0.1)'
               }
             }}
           >
@@ -263,25 +263,25 @@ const CadastroRefeicao = () => {
       <Grid container spacing={4}>
         {/* Formulário Unificado - Informações da Refeição e Adicionar Alimentos */}
         <Grid item xs={12}>
-          <Card elevation={2} sx={{ borderRadius: 2, border: '1px solid #80EF80', overflow: 'hidden', bgcolor: '#0D1117' }}>
+          <Card elevation={2} sx={{ borderRadius: 2, border: '1px solid #E0E0E0', overflow: 'hidden', bgcolor: '#FFFFFF', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
             <CardHeader
               avatar={
-                <Avatar sx={{ bgcolor: '#80EF80', color: '#010409', width: 48, height: 48 }}>
+                <Avatar sx={{ bgcolor: '#4CAF50', color: '#FFFFFF', width: 48, height: 48 }}>
                   <Restaurant />
                 </Avatar>
               }
               title="Configurar Refeição"
               subheader="Defina as informações básicas e adicione alimentos à sua refeição"
-              titleTypographyProps={{ variant: 'h5', fontWeight: '700', color: '#80EF80' }}
-              subheaderTypographyProps={{ variant: 'body2', color: 'rgba(255,255,255,0.7)', mt: 0.5 }}
-              sx={{ pb: 2, background: 'linear-gradient(135deg, #0D1117 0%, #010409 100%)', borderBottom: '1px solid #80EF80' }}
+              titleTypographyProps={{ variant: 'h5', fontWeight: '700', color: '#333333' }}
+              subheaderTypographyProps={{ variant: 'body2', color: 'rgba(51,51,51,0.7)', mt: 0.5 }}
+              sx={{ pb: 2, background: 'linear-gradient(135deg, #F5F5F5 0%, #E8F5E8 100%)', borderBottom: '1px solid #E0E0E0' }}
             />
             <CardContent sx={{ p: 4 }}>
               <Grid container spacing={4}>
                 {/* Seção: Informações Básicas */}
                 <Grid item xs={12}>
                   <Box sx={{ mb: 3 }}>
-                    <Typography variant="h6" sx={{ color: '#80EF80', fontWeight: '600', mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Typography variant="h6" sx={{ color: '#333333', fontWeight: '600', mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
                       <LocalDining fontSize="small" />
                       Informações da Refeição
                     </Typography>
@@ -307,24 +307,24 @@ const CadastroRefeicao = () => {
                           sx={{
                             '& .MuiOutlinedInput-root': {
                               borderRadius: 2,
-                              backgroundColor: '#0D1117',
-                              border: '1px solid #80EF80',
-                              color: '#ffffff',
+                              backgroundColor: '#FFFFFF',
+                              border: '1px solid #E0E0E0',
+                              color: '#333333',
                               height: 56,
                               '&:hover': {
-                                backgroundColor: '#010409',
-                                borderColor: '#80EF80',
+                                backgroundColor: '#FFFFFF',
+                                borderColor: '#4CAF50',
                               },
                               '&.Mui-focused': {
-                                backgroundColor: '#0D1117',
-                                borderColor: '#80EF80',
+                                backgroundColor: '#FFFFFF',
+                                borderColor: '#4CAF50',
                               }
                             },
                             '& .MuiInputLabel-root': {
-                              color: '#80EF80',
+                              color: '#4CAF50',
                             },
                             '& .MuiFormHelperText-root': {
-                              color: 'rgba(255,255,255,0.7)',
+                              color: 'rgba(51,51,51,0.7)',
                             }
                           }}
                         />
@@ -342,24 +342,24 @@ const CadastroRefeicao = () => {
                           sx={{
                             '& .MuiOutlinedInput-root': {
                               borderRadius: 2,
-                              backgroundColor: '#0D1117',
-                              border: '1px solid #80EF80',
-                              color: '#ffffff',
+                              backgroundColor: '#FFFFFF',
+                              border: '1px solid #E0E0E0',
+                              color: '#333333',
                               height: 56,
                               '&:hover': {
-                                backgroundColor: '#010409',
-                                borderColor: '#80EF80',
+                                backgroundColor: '#FFFFFF',
+                                borderColor: '#4CAF50',
                               },
                               '&.Mui-focused': {
-                                backgroundColor: '#0D1117',
-                                borderColor: '#80EF80',
+                                backgroundColor: '#FFFFFF',
+                                borderColor: '#4CAF50',
                               }
                             },
                             '& .MuiInputLabel-root': {
-                              color: '#80EF80',
+                              color: '#4CAF50',
                             },
                             '& .MuiFormHelperText-root': {
-                              color: 'rgba(255,255,255,0.7)',
+                              color: 'rgba(51,51,51,0.7)',
                             }
                           }}
                         />
@@ -389,7 +389,7 @@ const CadastroRefeicao = () => {
 
                 {/* Seção: Adicionar Alimentos */}
                 <Grid item xs={12}>
-                  <Typography variant="h6" sx={{ color: '#80EF80', fontWeight: '600', mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography variant="h6" sx={{ color: '#333333', fontWeight: '600', mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
                     <Add fontSize="small" />
                     Adicionar Alimentos
                   </Typography>
@@ -429,39 +429,39 @@ const CadastroRefeicao = () => {
                             sx={{
                               '& .MuiOutlinedInput-root': {
                                 borderRadius: 2,
-                                backgroundColor: '#0D1117',
-                                border: '1px solid #80EF80',
-                                color: '#ffffff',
+                                backgroundColor: '#FFFFFF',
+                                border: '1px solid #E0E0E0',
+                                color: '#333333',
                                 height: 56,
                                 '&:hover': {
-                                  backgroundColor: '#010409',
-                                  borderColor: '#80EF80',
+                                  backgroundColor: '#FFFFFF',
+                                  borderColor: '#4CAF50',
                                 },
                                 '&.Mui-focused': {
-                                  backgroundColor: '#0D1117',
-                                  borderColor: '#80EF80',
+                                  backgroundColor: '#FFFFFF',
+                                  borderColor: '#4CAF50',
                                 }
                               },
                               '& .MuiInputLabel-root': {
-                                color: '#80EF80',
+                                color: '#4CAF50',
                               },
                               '& .MuiFormHelperText-root': {
-                                color: 'rgba(255,255,255,0.7)',
+                                color: 'rgba(51,51,51,0.7)',
                               }
                             }}
                           />
                         )}
                         renderOption={(props, option) => (
-                          <Box component="li" {...props} sx={{ bgcolor: '#0D1117', color: '#ffffff' }}>
+                          <Box component="li" {...props} sx={{ bgcolor: '#FFFFFF', color: '#333333' }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%', py: 1 }}>
-                              <Avatar sx={{ width: 40, height: 40, bgcolor: '#80EF80', color: '#010409' }}>
+                              <Avatar sx={{ width: 40, height: 40, bgcolor: '#4CAF50', color: '#FFFFFF' }}>
                                 <Kitchen fontSize="small" />
                               </Avatar>
                               <Box sx={{ flexGrow: 1 }}>
-                                <Typography variant="body1" fontWeight="medium" color="#ffffff">
+                                <Typography variant="body1" fontWeight="medium" color="#333333">
                                   {option.nome}
                                 </Typography>
-                                <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                                <Typography variant="caption" color="rgba(51,51,51,0.7)">
                                   {option.energia_kcal} kcal • {option.proteinas_g}g prot • {option.carboidratos_g}g carbo
                                 </Typography>
                               </Box>
@@ -471,8 +471,8 @@ const CadastroRefeicao = () => {
                         ListboxProps={{
                           style: {
                             maxHeight: '300px',
-                            backgroundColor: '#0D1117',
-                            border: '1px solid #80EF80',
+                            backgroundColor: '#FFFFFF',
+                            border: '1px solid #E0E0E0',
                           }
                         }}
                       />
@@ -491,34 +491,34 @@ const CadastroRefeicao = () => {
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">
-                              <Scale sx={{ color: '#80EF80' }} fontSize="small" />
+                              <Scale sx={{ color: '#4CAF50' }} fontSize="small" />
                             </InputAdornment>
                           ),
-                          endAdornment: <InputAdornment position="end" sx={{ color: 'rgba(255,255,255,0.7)' }}>gramas</InputAdornment>,
+                          endAdornment: <InputAdornment position="end" sx={{ color: 'rgba(51,51,51,0.7)' }}>gramas</InputAdornment>,
                         }}
                         placeholder="Ex: 100"
                         helperText="Quantidade em gramas"
                         sx={{
                           '& .MuiOutlinedInput-root': {
                             borderRadius: 2,
-                            backgroundColor: '#0D1117',
-                            border: '1px solid #80EF80',
-                            color: '#ffffff',
+                            backgroundColor: '#FFFFFF',
+                            border: '1px solid #E0E0E0',
+                            color: '#333333',
                             height: 56,
                             '&:hover': {
-                              backgroundColor: '#010409',
-                              borderColor: '#80EF80',
+                              backgroundColor: '#FFFFFF',
+                              borderColor: '#4CAF50',
                             },
                             '&.Mui-focused': {
-                              backgroundColor: '#0D1117',
-                              borderColor: '#80EF80',
+                              backgroundColor: '#FFFFFF',
+                              borderColor: '#4CAF50',
                             }
                           },
                           '& .MuiInputLabel-root': {
-                            color: '#80EF80',
+                            color: '#4CAF50',
                           },
                           '& .MuiFormHelperText-root': {
-                            color: 'rgba(255,255,255,0.7)',
+                            color: 'rgba(51,51,51,0.7)',
                           }
                         }}
                       />
@@ -538,26 +538,26 @@ const CadastroRefeicao = () => {
                             borderRadius: 2,
                             minWidth: 200,
                             background: !alimentoSelecionado || !quantidade || quantidade <= 0
-                              ? 'rgba(128, 239, 128, 0.3)'
-                              : '#80EF80',
+                              ? 'rgba(76, 175, 80, 0.3)'
+                              : '#4CAF50',
                             boxShadow: !alimentoSelecionado || !quantidade || quantidade <= 0
                               ? 'none'
-                              : '0 4px 12px 2px rgba(128, 239, 128, .3)',
+                              : '0 4px 12px 2px rgba(76, 175, 80, .3)',
                             color: !alimentoSelecionado || !quantidade || quantidade <= 0
-                              ? 'rgba(255,255,255,0.5)'
-                              : '#010409',
+                              ? '#999999'
+                              : '#FFFFFF',
                             fontWeight: '600',
                             '&:hover': {
                               background: !alimentoSelecionado || !quantidade || quantidade <= 0
-                                ? 'rgba(128, 239, 128, 0.3)'
-                                : '#66CC66',
+                                ? 'rgba(76, 175, 80, 0.3)'
+                                : '#388E3C',
                               boxShadow: !alimentoSelecionado || !quantidade || quantidade <= 0
                                 ? 'none'
-                                : '0 6px 16px 2px rgba(102, 204, 102, .4)',
+                                : '0 6px 16px 2px rgba(56, 142, 60, .4)',
                             },
                             '&:disabled': {
-                              background: 'rgba(128, 239, 128, 0.3)',
-                              color: 'rgba(255,255,255,0.5)',
+                              background: 'rgba(76, 175, 80, 0.3)',
+                              color: '#999999',
                               boxShadow: 'none',
                             }
                           }}
@@ -575,10 +575,10 @@ const CadastroRefeicao = () => {
 
         {/* Lista de Alimentos Adicionados */}
         <Grid item xs={12}>
-          <Card elevation={1} sx={{ borderRadius: 2, border: '1px solid #80EF80', bgcolor: '#0D1117' }}>
+          <Card elevation={1} sx={{ borderRadius: 2, border: '1px solid #E0E0E0', bgcolor: '#FFFFFF', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
             <CardHeader
               avatar={
-                <Avatar sx={{ bgcolor: '#80EF80', color: '#010409', width: 48, height: 48 }}>
+                <Avatar sx={{ bgcolor: '#4CAF50', color: '#FFFFFF', width: 48, height: 48 }}>
                   <Restaurant />
                 </Avatar>
               }
@@ -589,28 +589,28 @@ const CadastroRefeicao = () => {
                     <Chip 
                       label={`${calcularTotais().kcal.toFixed(0)} kcal`} 
                       size="small" 
-                      sx={{ bgcolor: 'rgba(128, 239, 128, 0.2)', color: '#80EF80', border: '1px solid #80EF80' }}
+                      sx={{ bgcolor: 'rgba(76, 175, 80, 0.2)', color: '#4CAF50', border: '1px solid #4CAF50' }}
                     />
                     <Chip 
                       label={`${calcularTotais().carbo.toFixed(1)}g carbo`} 
                       size="small" 
-                      sx={{ bgcolor: 'rgba(128, 239, 128, 0.1)', color: '#80EF80', border: '1px solid rgba(128, 239, 128, 0.5)' }}
+                      sx={{ bgcolor: 'rgba(255, 152, 0, 0.1)', color: '#FF9800', border: '1px solid rgba(255, 152, 0, 0.5)' }}
                     />
                     <Chip 
                       label={`${calcularTotais().proteina.toFixed(1)}g prot`} 
                       size="small" 
-                      sx={{ bgcolor: 'rgba(128, 239, 128, 0.1)', color: '#80EF80', border: '1px solid rgba(128, 239, 128, 0.5)' }}
+                      sx={{ bgcolor: 'rgba(255, 193, 7, 0.1)', color: '#FFC107', border: '1px solid rgba(255, 193, 7, 0.5)' }}
                     />
                     <Chip 
                       label={`${calcularTotais().gordura.toFixed(1)}g gord`} 
                       size="small" 
-                      sx={{ bgcolor: 'rgba(128, 239, 128, 0.1)', color: '#80EF80', border: '1px solid rgba(128, 239, 128, 0.5)' }}
+                      sx={{ bgcolor: 'rgba(255, 152, 0, 0.1)', color: '#FF9800', border: '1px solid rgba(255, 152, 0, 0.5)' }}
                     />
                   </Box>
                 ) : 'Adicione alimentos para ver o resumo nutricional'
               }
-              titleTypographyProps={{ variant: 'h6', fontWeight: '600', color: '#80EF80' }}
-              subheaderTypographyProps={{ color: 'rgba(255,255,255,0.7)' }}
+              titleTypographyProps={{ variant: 'h6', fontWeight: '600', color: '#333333' }}
+              subheaderTypographyProps={{ color: 'rgba(51,51,51,0.7)' }}
               sx={{ pb: 1 }}
             />
             <CardContent sx={{ pt: 0, px: 3, pb: 3 }}>
@@ -621,24 +621,24 @@ const CadastroRefeicao = () => {
                     height: 80, 
                     mx: 'auto', 
                     mb: 3, 
-                    bgcolor: '#80EF80',
-                    color: '#010409'
+                    bgcolor: '#FFC107',
+                    color: '#333333'
                   }}>
                     <Restaurant fontSize="large" />
                   </Avatar>
-                  <Typography variant="h6" color="#80EF80" gutterBottom fontWeight="500">
+                  <Typography variant="h6" color="#FFC107" gutterBottom fontWeight="500">
                     Nenhum alimento adicionado
                   </Typography>
-                  <Typography variant="body2" color="rgba(255,255,255,0.7)" sx={{ mb: 3, maxWidth: 400, mx: 'auto' }}>
+                  <Typography variant="body2" color="#666666" sx={{ mb: 3, maxWidth: 400, mx: 'auto' }}>
                     Use o formulário acima para adicionar alimentos à sua refeição
                   </Typography>
                   <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1.5, flexWrap: 'wrap' }}>
                     <Chip icon={<Search />} label="Busque alimentos" variant="outlined" size="medium" 
-                          sx={{ color: '#80EF80', borderColor: '#80EF80' }} />
+                          sx={{ color: '#FFC107', borderColor: '#FFC107' }} />
                     <Chip icon={<Scale />} label="Defina quantidades" variant="outlined" size="medium" 
-                          sx={{ color: '#80EF80', borderColor: '#80EF80' }} />
+                          sx={{ color: '#FFC107', borderColor: '#FFC107' }} />
                     <Chip icon={<Add />} label="Adicione à refeição" variant="outlined" size="medium" 
-                          sx={{ color: '#80EF80', borderColor: '#80EF80' }} />
+                          sx={{ color: '#FFC107', borderColor: '#FFC107' }} />
                   </Box>
                 </Box>
               ) : (
@@ -647,18 +647,18 @@ const CadastroRefeicao = () => {
                   <Grid container spacing={2}>
                     {itensRefeicao.map((item, index) => (
                       <Grid item xs={12} key={index}>
-                        <Card variant="outlined" sx={{ borderRadius: 2, bgcolor: '#0D1117', border: '1px solid #80EF80' }}>
+                        <Card variant="outlined" sx={{ borderRadius: 2, bgcolor: '#FFFFFF', border: '1px solid #FFC107' }}>
                           <CardContent sx={{ p: 2 }}>
                             <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
                               <Box display="flex" alignItems="center" gap={1.5} flex={1}>
-                                <Avatar sx={{ width: 40, height: 40, bgcolor: '#80EF80', color: '#010409' }}>
+                                <Avatar sx={{ width: 40, height: 40, bgcolor: '#FFC107', color: '#333333' }}>
                                   <Kitchen fontSize="small" />
                                 </Avatar>
                                 <Box flex={1}>
-                                  <Typography variant="body1" fontWeight="600" noWrap color="#ffffff">
+                                  <Typography variant="body1" fontWeight="600" noWrap color="#333333">
                                     {item.alimento.nome}
                                   </Typography>
-                                  <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                                  <Typography variant="caption" color="#666666">
                                     {item.quantidade_g}g
                                   </Typography>
                                 </Box>
@@ -675,40 +675,40 @@ const CadastroRefeicao = () => {
                             <Grid container spacing={1}>
                               <Grid item xs={3}>
                                 <Box textAlign="center">
-                                  <Typography variant="h6" color="#80EF80" fontWeight="bold">
+                                  <Typography variant="h6" color="#FFC107" fontWeight="bold">
                                     {item.kcal_total.toFixed(0)}
                                   </Typography>
-                                  <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                                  <Typography variant="caption" color="#666666">
                                     kcal
                                   </Typography>
                                 </Box>
                               </Grid>
                               <Grid item xs={3}>
                                 <Box textAlign="center">
-                                  <Typography variant="h6" color="#80EF80" fontWeight="bold">
+                                  <Typography variant="h6" color="#FFC107" fontWeight="bold">
                                     {item.carbo_total.toFixed(1)}
                                   </Typography>
-                                  <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                                  <Typography variant="caption" color="#666666">
                                     carbo
                                   </Typography>
                                 </Box>
                               </Grid>
                               <Grid item xs={3}>
                                 <Box textAlign="center">
-                                  <Typography variant="h6" color="#80EF80" fontWeight="bold">
+                                  <Typography variant="h6" color="#FFC107" fontWeight="bold">
                                     {item.proteina_total.toFixed(1)}
                                   </Typography>
-                                  <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                                  <Typography variant="caption" color="#666666">
                                     prot
                                   </Typography>
                                 </Box>
                               </Grid>
                               <Grid item xs={3}>
                                 <Box textAlign="center">
-                                  <Typography variant="h6" color="#80EF80" fontWeight="bold">
+                                  <Typography variant="h6" color="#FFC107" fontWeight="bold">
                                     {item.gordura_total.toFixed(1)}
                                   </Typography>
-                                  <Typography variant="caption" color="rgba(255,255,255,0.7)">
+                                  <Typography variant="caption" color="#666666">
                                     gord
                                   </Typography>
                                 </Box>
@@ -725,69 +725,69 @@ const CadastroRefeicao = () => {
               {/* Layout Desktop - Tabela */}
               {itensRefeicao.length > 0 && (
                 <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                  <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 2, border: '1px solid #80EF80', boxShadow: 'none', bgcolor: '#0D1117' }}>
+                  <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 2, border: '1px solid #FFC107', boxShadow: 'none', bgcolor: '#FFFFFF' }}>
                     <Table>
                       <TableHead>
-                        <TableRow sx={{ bgcolor: '#010409' }}>
-                          <TableCell sx={{ fontWeight: '600', color: '#80EF80', fontSize: '0.875rem', py: 2, borderBottom: '1px solid #80EF80' }}>Alimento</TableCell>
-                          <TableCell align="center" sx={{ fontWeight: '600', color: '#80EF80', fontSize: '0.875rem', py: 2, borderBottom: '1px solid #80EF80' }}>Quantidade</TableCell>
-                          <TableCell align="center" sx={{ fontWeight: '600', color: '#80EF80', fontSize: '0.875rem', py: 2, borderBottom: '1px solid #80EF80' }}>Calorias</TableCell>
-                          <TableCell align="center" sx={{ fontWeight: '600', color: '#80EF80', fontSize: '0.875rem', py: 2, borderBottom: '1px solid #80EF80' }}>Carbo</TableCell>
-                          <TableCell align="center" sx={{ fontWeight: '600', color: '#80EF80', fontSize: '0.875rem', py: 2, borderBottom: '1px solid #80EF80' }}>Proteína</TableCell>
-                          <TableCell align="center" sx={{ fontWeight: '600', color: '#80EF80', fontSize: '0.875rem', py: 2, borderBottom: '1px solid #80EF80' }}>Gordura</TableCell>
-                          <TableCell align="center" sx={{ fontWeight: '600', color: '#80EF80', fontSize: '0.875rem', py: 2, borderBottom: '1px solid #80EF80' }}>Ações</TableCell>
+                        <TableRow sx={{ bgcolor: '#F5F5F5' }}>
+                          <TableCell sx={{ fontWeight: '600', color: '#FFC107', fontSize: '0.875rem', py: 2, borderBottom: '1px solid #FFC107' }}>Alimento</TableCell>
+                          <TableCell align="center" sx={{ fontWeight: '600', color: '#FFC107', fontSize: '0.875rem', py: 2, borderBottom: '1px solid #FFC107' }}>Quantidade</TableCell>
+                          <TableCell align="center" sx={{ fontWeight: '600', color: '#FFC107', fontSize: '0.875rem', py: 2, borderBottom: '1px solid #FFC107' }}>Calorias</TableCell>
+                          <TableCell align="center" sx={{ fontWeight: '600', color: '#FFC107', fontSize: '0.875rem', py: 2, borderBottom: '1px solid #FFC107' }}>Carbo</TableCell>
+                          <TableCell align="center" sx={{ fontWeight: '600', color: '#FFC107', fontSize: '0.875rem', py: 2, borderBottom: '1px solid #FFC107' }}>Proteína</TableCell>
+                          <TableCell align="center" sx={{ fontWeight: '600', color: '#FFC107', fontSize: '0.875rem', py: 2, borderBottom: '1px solid #FFC107' }}>Gordura</TableCell>
+                          <TableCell align="center" sx={{ fontWeight: '600', color: '#FFC107', fontSize: '0.875rem', py: 2, borderBottom: '1px solid #FFC107' }}>Ações</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
                         {itensRefeicao.map((item, index) => (
-                          <TableRow key={index} hover sx={{ '&:hover': { bgcolor: '#010409' } }}>
-                            <TableCell sx={{ py: 2, borderBottom: '1px solid rgba(128, 239, 128, 0.2)' }}>
+                          <TableRow key={index} hover sx={{ '&:hover': { bgcolor: '#F5F5F5' } }}>
+                            <TableCell sx={{ py: 2, borderBottom: '1px solid rgba(255, 193, 7, 0.2)' }}>
                               <Box display="flex" alignItems="center" gap={2}>
-                                <Avatar sx={{ width: 36, height: 36, bgcolor: '#80EF80', color: '#010409' }}>
+                                <Avatar sx={{ width: 36, height: 36, bgcolor: '#FFC107', color: '#333333' }}>
                                   <Kitchen fontSize="small" />
                                 </Avatar>
-                                <Typography variant="body2" fontWeight="500" color="#ffffff">
+                                <Typography variant="body2" fontWeight="500" color="#333333">
                                   {item.alimento.nome}
                                 </Typography>
                               </Box>
                             </TableCell>
-                            <TableCell align="center" sx={{ py: 2, borderBottom: '1px solid rgba(128, 239, 128, 0.2)' }}>
+                            <TableCell align="center" sx={{ py: 2, borderBottom: '1px solid rgba(255, 193, 7, 0.2)' }}>
                               <Chip 
                                 label={`${item.quantidade_g}g`} 
                                 size="small" 
                                 variant="outlined"
-                                sx={{ color: '#80EF80', borderColor: '#80EF80' }}
+                                sx={{ color: '#FFC107', borderColor: '#FFC107' }}
                               />
                             </TableCell>
-                            <TableCell align="center" sx={{ py: 2, borderBottom: '1px solid rgba(128, 239, 128, 0.2)' }}>
+                            <TableCell align="center" sx={{ py: 2, borderBottom: '1px solid rgba(255, 193, 7, 0.2)' }}>
                               <Chip 
                                 label={`${item.kcal_total.toFixed(1)}`} 
                                 size="small" 
-                                sx={{ bgcolor: 'rgba(128, 239, 128, 0.2)', color: '#80EF80' }}
+                                sx={{ bgcolor: 'rgba(255, 193, 7, 0.2)', color: '#FFC107' }}
                               />
                             </TableCell>
-                            <TableCell align="center" sx={{ py: 2, borderBottom: '1px solid rgba(128, 239, 128, 0.2)' }}>
+                            <TableCell align="center" sx={{ py: 2, borderBottom: '1px solid rgba(255, 193, 7, 0.2)' }}>
                               <Chip 
                                 label={`${item.carbo_total.toFixed(1)}g`} 
                                 size="small" 
-                                sx={{ bgcolor: 'rgba(128, 239, 128, 0.1)', color: '#80EF80', border: '1px solid #80EF80' }}
+                                sx={{ bgcolor: 'rgba(255, 193, 7, 0.1)', color: '#FFC107', border: '1px solid #FFC107' }}
                               />
                             </TableCell>
-                            <TableCell align="center" sx={{ py: 2, borderBottom: '1px solid rgba(128, 239, 128, 0.2)' }}>
+                            <TableCell align="center" sx={{ py: 2, borderBottom: '1px solid rgba(255, 193, 7, 0.2)' }}>
                               <Chip 
                                 label={`${item.proteina_total.toFixed(1)}g`} 
                                 size="small" 
-                                sx={{ bgcolor: 'rgba(128, 239, 128, 0.1)', color: '#80EF80', border: '1px solid #80EF80' }}
+                                sx={{ bgcolor: 'rgba(255, 193, 7, 0.1)', color: '#FFC107', border: '1px solid #FFC107' }}
                               />
                             </TableCell>
-                            <TableCell align="center" sx={{ py: 2, borderBottom: '1px solid rgba(128, 239, 128, 0.2)' }}>
+                            <TableCell align="center" sx={{ py: 2, borderBottom: '1px solid rgba(255, 193, 7, 0.2)' }}>
                               <Chip 
                                 label={`${item.gordura_total.toFixed(1)}g`} 
                                 size="small" 
-                                sx={{ bgcolor: 'rgba(128, 239, 128, 0.1)', color: '#80EF80', border: '1px solid #80EF80' }}
+                                sx={{ bgcolor: 'rgba(255, 193, 7, 0.1)', color: '#FFC107', border: '1px solid #FFC107' }}
                               />
                             </TableCell>
-                            <TableCell align="center" sx={{ py: 2, borderBottom: '1px solid rgba(128, 239, 128, 0.2)' }}>
+                            <TableCell align="center" sx={{ py: 2, borderBottom: '1px solid rgba(255, 193, 7, 0.2)' }}>
                               <Tooltip title="Remover alimento">
                                 <IconButton
                                   size="small"
@@ -817,7 +817,7 @@ const CadastroRefeicao = () => {
 
         {/* Botões de Ação */}
         <Grid item xs={12}>
-          <Paper elevation={1} sx={{ p: 4, borderRadius: 3, bgcolor: '#0D1117', border: '1px solid #80EF80' }}>
+          <Paper elevation={1} sx={{ p: 4, borderRadius: 3, bgcolor: '#FFFFFF', border: '1px solid #E0E0E0' }}>
             <Grid container spacing={3} alignItems="center">
               {/* Botão Cancelar */}
               <Grid item xs={12} sm={6} lg={3}>
@@ -830,12 +830,12 @@ const CadastroRefeicao = () => {
                   sx={{ 
                     borderRadius: 2,
                     height: 56,
-                    borderColor: '#80EF80',
-                    color: '#80EF80',
+                    borderColor: '#FF9800',
+                    color: '#FF9800',
                     fontWeight: '500',
                     '&:hover': {
-                      borderColor: '#80EF80',
-                      backgroundColor: 'rgba(128, 239, 128, 0.04)'
+                      borderColor: '#FF9800',
+                      backgroundColor: 'rgba(255, 152, 0, 0.04)'
                     }
                   }}
                 >
@@ -846,7 +846,7 @@ const CadastroRefeicao = () => {
               {/* Informações Centrais */}
               <Grid item xs={12} sm={12} lg={6}>
                 <Box textAlign="center">
-                  <Typography variant="h6" color="#80EF80" gutterBottom fontWeight="600">
+                  <Typography variant="h6" color="#FFC107" gutterBottom fontWeight="600">
                     {nome ? `${nome}` : 'Digite um nome para a refeição'}
                   </Typography>
                   <Stack direction="row" spacing={2} justifyContent="center" flexWrap="wrap" useFlexGap>
@@ -855,9 +855,9 @@ const CadastroRefeicao = () => {
                       label={`${itensRefeicao.length} ${itensRefeicao.length === 1 ? 'alimento' : 'alimentos'}`}
                       size="medium"
                       sx={{ 
-                        bgcolor: itensRefeicao.length > 0 ? 'rgba(128, 239, 128, 0.2)' : 'rgba(255,255,255,0.1)',
-                        color: '#80EF80',
-                        border: '1px solid #80EF80'
+                        bgcolor: itensRefeicao.length > 0 ? 'rgba(255, 193, 7, 0.2)' : 'rgba(255, 193, 7, 0.1)',
+                        color: '#FFC107',
+                        border: '1px solid #FFC107'
                       }}
                     />
                     {itensRefeicao.length > 0 && (
@@ -866,9 +866,9 @@ const CadastroRefeicao = () => {
                         label={`${calcularTotais().kcal.toFixed(0)} kcal`}
                         size="medium"
                         sx={{ 
-                          bgcolor: 'rgba(128, 239, 128, 0.2)',
-                          color: '#80EF80',
-                          border: '1px solid #80EF80'
+                          bgcolor: 'rgba(255, 193, 7, 0.2)',
+                          color: '#FFC107',
+                          border: '1px solid #FFC107'
                         }}
                       />
                     )}
@@ -890,14 +890,14 @@ const CadastroRefeicao = () => {
                     height: 56,
                     fontWeight: '600',
                     background: loadingCriando || !nome.trim() || itensRefeicao.length === 0
-                      ? 'rgba(128, 239, 128, 0.3)' 
-                      : '#80EF80',
+                      ? 'rgba(76, 175, 80, 0.3)' 
+                      : '#4CAF50',
                     color: loadingCriando || !nome.trim() || itensRefeicao.length === 0
-                      ? 'rgba(255,255,255,0.5)' 
-                      : '#010409',
+                      ? '#999999' 
+                      : '#FFFFFF',
                     boxShadow: loadingCriando || !nome.trim() || itensRefeicao.length === 0
                       ? 'none' 
-                      : '0 4px 12px 2px rgba(128, 239, 128, .3)',
+                      : '0 4px 12px 2px rgba(76, 175, 80, .3)',
                     color: loadingCriando || !nome.trim() || itensRefeicao.length === 0
                       ? '#999'
                       : 'white',
