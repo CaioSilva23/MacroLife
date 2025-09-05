@@ -88,8 +88,8 @@ const Login = () => {
         // Configurar header de autorização para próximas requisições
         api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token.access}`;
         
-        // Redirecionar para a página principal
-        navigate('/');
+        // Redirecionar para verificação de perfil
+        navigate('/verificar-perfil');
       }
     } catch (err) {
       console.error('Erro no login:', err);

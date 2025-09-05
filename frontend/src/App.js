@@ -7,6 +7,7 @@ import ListaRefeicoes from './components/Refeicoes/ListaRefeicoes';
 import CadastroRefeicao from './components/Refeicoes/CadastroRefeicao';
 import Login from './components/User/Login';
 import Cadastro from './components/User/Cadastro';
+import VerificacaoPerfil from './components/User/VerificacaoPerfil';
 import authUtils from './utils/auth';
 import './App.css';
 
@@ -78,7 +79,7 @@ const PublicRoute = ({ children }) => {
   const isAuthenticated = authUtils.isAuthenticated();
   
   if (isAuthenticated) {
-    return <Navigate to="/refeicoes" replace />;
+    return <Navigate to="/verificar-perfil" replace />;
   }
   
   return children;
@@ -97,7 +98,7 @@ function App() {
                 path="/" 
                 element={
                   authUtils.isAuthenticated() 
-                    ? <Navigate to="/refeicoes" replace />
+                    ? <Navigate to="/verificar-perfil" replace />
                     : <Navigate to="/login" replace />
                 } 
               />
@@ -126,6 +127,20 @@ function App() {
                       </Box>
                     </Fade>
                   </PublicRoute>
+                } 
+              />
+              
+              {/* Rota de verificação de perfil */}
+              <Route 
+                path="/verificar-perfil" 
+                element={
+                  <ProtectedRoute>
+                    <Fade in timeout={400}>
+                      <Box>
+                        <VerificacaoPerfil />
+                      </Box>
+                    </Fade>
+                  </ProtectedRoute>
                 } 
               />
               
@@ -176,7 +191,7 @@ function App() {
                 path="*" 
                 element={
                   authUtils.isAuthenticated() 
-                    ? <Navigate to="/refeicoes" replace />
+                    ? <Navigate to="/verificar-perfil" replace />
                     : <Navigate to="/login" replace />
                 } 
               />

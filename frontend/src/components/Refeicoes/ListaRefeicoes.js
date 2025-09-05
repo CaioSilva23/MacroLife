@@ -60,7 +60,7 @@ import {
   Logout,
   Settings,
 } from '@mui/icons-material';
-import { refeicoesService } from '../../services/api';
+import { refeicoesService, userService } from '../../services/api';
 import Swal from "sweetalert2";
 import Header from '../Common/Header';
 import authUtils from '../../utils/auth';
@@ -81,6 +81,12 @@ const ListaRefeicoes = () => {
     const hoje = new Date();
     return hoje.toISOString().split('T')[0]; // formato YYYY-MM-DD
   });
+  const [macrosUsuario, setMacrosUsuario] = useState({
+    calorias_diarias: 2000,
+    carboidratos_diarios: 250,
+    proteinas_diarias: 150,
+    gorduras_diarias: 65,
+  });
 
   // Estados do contexto
   const { refeicoes } = state;
@@ -92,7 +98,22 @@ const ListaRefeicoes = () => {
   // Carregar refeições ao montar o componente e quando a data do filtro mudar
   useEffect(() => {
     carregarRefeicoes();
+    carregarMacrosUsuario();
   }, [dataFiltro]);
+
+  const carregarMacrosUsuario = useCallback(async () => {
+    try {
+      const response = await userService.profile();
+      const perfil = response.data;
+      
+      if (perfil.macros) {
+        setMacrosUsuario(perfil.macros);
+      }
+    } catch (err) {
+      console.error('Erro ao carregar macros do usuário:', err);
+      // Manter valores padrão se houver erro
+    }
+  }, []);
 
   const carregarRefeicoes = useCallback(async () => {
     // Verificar cache primeiro
@@ -223,10 +244,10 @@ const ListaRefeicoes = () => {
 
   const totaisGerais = calcularTotaisGerais();
   const progressoNutricional = {
-    kcal: Math.min((totaisGerais.kcal / 2000) * 100, 100),
-    carbo: Math.min((totaisGerais.carbo / 250) * 100, 100),
-    proteina: Math.min((totaisGerais.proteina / 150) * 100, 100),
-    gordura: Math.min((totaisGerais.gordura / 65) * 100, 100),
+    kcal: Math.min((totaisGerais.kcal / macrosUsuario.calorias_diarias) * 100, 100),
+    carbo: Math.min((totaisGerais.carbo / macrosUsuario.carboidratos_diarios) * 100, 100),
+    proteina: Math.min((totaisGerais.proteina / macrosUsuario.proteinas_diarias) * 100, 100),
+    gordura: Math.min((totaisGerais.gordura / macrosUsuario.gorduras_diarias) * 100, 100),
   };
 
   if (loadingRefeicoes && refeicoes.length === 0) {
@@ -399,7 +420,7 @@ const ListaRefeicoes = () => {
                     }}
                   />
                   <Typography variant="caption" color="rgba(51,51,51,0.7)">
-                    {progressoNutricional.kcal.toFixed(0)}% da meta diária
+                    {progressoNutricional.kcal.toFixed(0)}% da meta ({macrosUsuario.calorias_diarias} kcal)
                   </Typography>
                 </Box>
               </Grid>
@@ -426,7 +447,7 @@ const ListaRefeicoes = () => {
                     }}
                   />
                   <Typography variant="caption" color="rgba(51,51,51,0.7)">
-                    {progressoNutricional.carbo.toFixed(0)}% da meta diária
+                    {progressoNutricional.carbo.toFixed(0)}% da meta ({macrosUsuario.carboidratos_diarios}g)
                   </Typography>
                 </Box>
               </Grid>
@@ -453,7 +474,7 @@ const ListaRefeicoes = () => {
                     }}
                   />
                   <Typography variant="caption" color="rgba(51,51,51,0.7)">
-                    {progressoNutricional.proteina.toFixed(0)}% da meta diária
+                    {progressoNutricional.proteina.toFixed(0)}% da meta ({macrosUsuario.proteinas_diarias}g)
                   </Typography>
                 </Box>
               </Grid>
@@ -480,7 +501,7 @@ const ListaRefeicoes = () => {
                     }}
                   />
                   <Typography variant="caption" color="rgba(51,51,51,0.7)">
-                    {progressoNutricional.gordura.toFixed(0)}% da meta diária
+                    {progressoNutricional.gordura.toFixed(0)}% da meta ({macrosUsuario.gorduras_diarias}g)
                   </Typography>
                 </Box>
               </Grid>

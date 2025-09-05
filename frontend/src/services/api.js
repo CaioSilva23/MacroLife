@@ -109,6 +109,11 @@ export const userService = {
     return api.get('/auth/profile/');
   },
 
+  // Atualizar perfil do usuário
+  updateProfile: (profileData) => {
+    return api.put('/auth/profile/', profileData);
+  },
+
   // Alterar senha
   changePassword: (passwordData) => {
     return api.put('/auth/change-password/', passwordData);
