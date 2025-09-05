@@ -17,9 +17,7 @@ import {
   Container,
   Paper,
   IconButton,
-  Tooltip,
   LinearProgress,
-  Stack,
   TableContainer,
   Table,
   TableHead,
@@ -29,7 +27,6 @@ import {
   Fab,
   useMediaQuery,
   useTheme,
-  Collapse,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -40,6 +37,11 @@ import {
   TextField,
   Fade,
   Grow,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  Divider,
+  MenuItem,
 } from '@mui/material';
 import {
   Restaurant,
@@ -51,13 +53,18 @@ import {
   Kitchen,
   FitnessCenter,
   ExpandMore,
-  Scale,
   Close,
   FilterList,
   Today,
+  AccountCircle,
+  Logout,
+  Settings,
 } from '@mui/icons-material';
 import { refeicoesService } from '../../services/api';
 import Swal from "sweetalert2";
+import Header from '../Common/Header';
+import authUtils from '../../utils/auth';
+import ModalCadastroRefeicao from './ModalCadastroRefeicao';
 
 const ListaRefeicoes = () => {
   const navigate = useNavigate();
@@ -69,6 +76,7 @@ const ListaRefeicoes = () => {
   const [expandedRefeicao, setExpandedRefeicao] = useState(false);
   const [dialogAberto, setDialogAberto] = useState(false);
   const [refeicaoSelecionada, setRefeicaoSelecionada] = useState(null);
+  const [modalCadastroAberto, setModalCadastroAberto] = useState(false);
   const [dataFiltro, setDataFiltro] = useState(() => {
     const hoje = new Date();
     return hoje.toISOString().split('T')[0]; // formato YYYY-MM-DD
@@ -145,9 +153,17 @@ const ListaRefeicoes = () => {
     setRefeicaoSelecionada(null);
   };
 
-  const abrirDetalhes = (refeicao) => {
-    setRefeicaoSelecionada(refeicao);
-    setDialogAberto(true);
+  const abrirModalCadastro = () => {
+    setModalCadastroAberto(true);
+  };
+
+  const fecharModalCadastro = () => {
+    setModalCadastroAberto(false);
+  };
+
+  const handleRefeicaoCriada = (novaRefeicao) => {
+    // Recarregar refeições para atualizar a lista
+    carregarRefeicoes();
   };
 
   const formatarData = (dataString) => {
@@ -220,72 +236,13 @@ const ListaRefeicoes = () => {
   return (
     <Container maxWidth="xl" sx={{ py: 2 }}>
       {/* Header */}
-      <Paper elevation={0} sx={{ p: 3, mb: 3, borderRadius: 2, background: 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)', border: '1px solid #E0E0E0', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Box display="flex" alignItems="center" gap={2}>
-            <Avatar sx={{ bgcolor: '#FFFFFF', color: '#4CAF50',  width: 64, height: 64  }}>
-              <Restaurant fontSize="large" />
-            </Avatar>
-            <Box>
-              <Typography variant="h4" component="h1" sx={{ color: '#FFFFFF', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <LocalDining />
-                Minhas Refeições
-              </Typography>
-              <Typography variant="subtitle1" sx={{ color: 'rgba(255,255,255,0.9)' }}>
-                Gerencie suas refeições personalizadas
-              </Typography>
-              {/* Estatísticas rápidas */}
-              <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
-                <Chip 
-                  size="small" 
-                  label={`${refeicoes.length} ${refeicoes.length === 1 ? 'refeição' : 'refeições'}`}
-                  sx={{ 
-                    bgcolor: 'rgba(255, 193, 7, 0.2)', 
-                    color: '#FFC107',
-                    border: '1px solid #FFC107',
-                    fontSize: '0.75rem'
-                  }}
-                />
-                {refeicoes.length > 0 && (
-                  <Chip 
-                    size="small" 
-                    label={`${refeicoes.reduce((acc, r) => acc + r.total_kcal, 0).toFixed(0)} kcal total`}
-                    sx={{ 
-                      bgcolor: 'rgba(255, 193, 7, 0.1)', 
-                      color: '#FFC107',
-                      border: '1px solid #FFC107',
-                      fontSize: '0.75rem'
-                    }}
-                  />
-                )}
-              </Box>
-            </Box>
-          </Box>
-          <Button 
-            variant="contained"
-            onClick={() => navigate('/refeicoes/novo')}
-            startIcon={<Add />}
-            sx={{ 
-              bgcolor: '#4CAF50', 
-              color: '#FFFFFF',
-              borderRadius: 2,
-              fontWeight: 'bold',
-              '&:hover': {
-                bgcolor: '#388E3C',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 4px 12px rgba(76, 175, 80, 0.3)'
-              },
-              transition: 'all 0.3s ease'
-            }}
-          >
-            Nova Refeição
-          </Button>
-        </Box>
-      </Paper>
+
+      <Header onNovaRefeicao={abrirModalCadastro} />
+
       {/* Floating Action Button para Mobile */}
       <Fab
         color="primary"
-        onClick={() => navigate('/refeicoes/novo')}
+        onClick={abrirModalCadastro}
         sx={{
           position: 'fixed',
           bottom: 16,
@@ -303,21 +260,7 @@ const ListaRefeicoes = () => {
 
       {/* Filtro de Data */}
       <Paper elevation={2} sx={{ p: 3, mb: 3, borderRadius: 2, bgcolor: '#FFFFFF', border: '1px solid #E0E0E0', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-        <Box display="flex" alignItems="center" justifyContent="space-between" flexWrap="wrap" gap={2}>
-          <Box display="flex" alignItems="center" gap={2}>
-            <Avatar sx={{ bgcolor: '#4CAF50', color: '#FFFFFF' }}>
-              <FilterList />
-            </Avatar>
-            <Box>
-              <Typography variant="h6" fontWeight="600" color="#333333">
-                Filtrar por Data
-              </Typography>
-              <Typography variant="body2" color="rgba(51,51,51,0.7)">
-                Visualize refeições de uma data específica
-              </Typography>
-            </Box>
-          </Box>
-
+        <Box display="flex" justifyContent="center" alignItems="center">
           <Box display="flex" alignItems="center" gap={1} flexWrap="wrap">
             {/* Navegação de datas */}
             <Button
@@ -405,21 +348,6 @@ const ListaRefeicoes = () => {
             >
               Hoje
             </Button>
-          </Box>
-
-          {/* Informação da data selecionada */}
-          <Box sx={{ width: '100%', mt: 1 }}>
-            <Typography variant="body2" color="text.secondary" textAlign="center">
-              Exibindo refeições de <strong>{formatarData(dataFiltro)}</strong>
-              {dataFiltro === new Date().toISOString().split('T')[0] && (
-                <Chip 
-                  label="Hoje" 
-                  size="small" 
-                  color="primary" 
-                  sx={{ ml: 1, fontSize: '0.7rem' }}
-                />
-              )}
-            </Typography>
           </Box>
         </Box>
       </Paper>
@@ -588,7 +516,7 @@ const ListaRefeicoes = () => {
           <Button
             variant="contained"
             startIcon={<Add />}
-            onClick={() => navigate('/refeicoes/novo')}
+            onClick={abrirModalCadastro}
             size="large"
             sx={{
               borderRadius: 2,
@@ -717,7 +645,7 @@ const ListaRefeicoes = () => {
                   )}
 
                   {/* Título da seção */}
-                  <Typography variant="h6" sx={{ mb: 2, color: '#333333', fontWeight: '600', display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography variant="h6" sx={{ mb: 2,color: '#333333', fontWeight: '600', display: 'flex', alignItems: 'center', gap: 1 }}>
                     <Restaurant fontSize="small" />
                     Detalhes dos Alimentos ({refeicao.itens.length})
                   </Typography>
@@ -1090,6 +1018,13 @@ const ListaRefeicoes = () => {
           </>
         )}
       </Dialog>
+
+      {/* Modal de Cadastro de Refeição */}
+      <ModalCadastroRefeicao
+        open={modalCadastroAberto}
+        onClose={fecharModalCadastro}
+        onRefeicaoCriada={handleRefeicaoCriada}
+      />
     </Container>
   );
 };

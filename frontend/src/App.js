@@ -5,6 +5,9 @@ import { CssBaseline, Container, Box, CircularProgress, Fade } from '@mui/materi
 import { AppProvider } from './contexts/AppContext';
 import ListaRefeicoes from './components/Refeicoes/ListaRefeicoes';
 import CadastroRefeicao from './components/Refeicoes/CadastroRefeicao';
+import Login from './components/User/Login';
+import Cadastro from './components/User/Cadastro';
+import authUtils from './utils/auth';
 import './App.css';
 
 // Criar tema do Material-UI
@@ -59,59 +62,126 @@ const PageLoader = () => (
   </Fade>
 );
 
+// Componente para proteger rotas que precisam de autenticação
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = authUtils.isAuthenticated();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  return children;
+};
+
+// Componente para rotas públicas (redireciona se já estiver logado)
+const PublicRoute = ({ children }) => {
+  const isAuthenticated = authUtils.isAuthenticated();
+  
+  if (isAuthenticated) {
+    return <Navigate to="/refeicoes" replace />;
+  }
+  
+  return children;
+};
+
 function App() {
   return (
     <AppProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Router>
-          <Container maxWidth="lg" sx={{ py: 2 }}>
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                {/* Rota raiz redireciona para refeições */}
-                <Route path="/" element={<Navigate to="/refeicoes" replace />} />
-                
-                {/* Rota para lista de refeições */}
-                <Route 
-                  path="/refeicoes" 
-                  element={
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              {/* Rota raiz redireciona baseado na autenticação */}
+              <Route 
+                path="/" 
+                element={
+                  authUtils.isAuthenticated() 
+                    ? <Navigate to="/refeicoes" replace />
+                    : <Navigate to="/login" replace />
+                } 
+              />
+              
+              {/* Rotas públicas (apenas para usuários não logados) */}
+              <Route 
+                path="/login" 
+                element={
+                  <PublicRoute>
                     <Fade in timeout={400}>
                       <Box>
-                        <ListaRefeicoes />
+                        <Login />
                       </Box>
                     </Fade>
-                  } 
-                />
-                
-                {/* Rota para cadastro de refeição */}
-                <Route 
-                  path="/refeicoes/novo" 
-                  element={
+                  </PublicRoute>
+                } 
+              />
+              
+              <Route 
+                path="/cadastro" 
+                element={
+                  <PublicRoute>
+                    <Fade in timeout={400}>
+                      <Box>
+                        <Cadastro />
+                      </Box>
+                    </Fade>
+                  </PublicRoute>
+                } 
+              />
+              
+              {/* Rotas protegidas (apenas para usuários logados) */}
+              <Route 
+                path="/refeicoes" 
+                element={
+                  <ProtectedRoute>
+                    <Container maxWidth="lg" sx={{ py: 2 }}>
+                      <Fade in timeout={400}>
+                        <Box>
+                          <ListaRefeicoes />
+                        </Box>
+                      </Fade>
+                    </Container>
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/refeicoes/novo" 
+                element={
+                  <ProtectedRoute>
                     <Fade in timeout={400}>
                       <Box>
                         <CadastroRefeicao />
                       </Box>
                     </Fade>
-                  } 
-                />
-                
-                {/* Rota para edição de refeição (para futura implementação) */}
-                <Route 
-                  path="/refeicoes/editar/:id" 
-                  element={
+                  </ProtectedRoute>
+                } 
+              />
+              
+              <Route 
+                path="/refeicoes/editar/:id" 
+                element={
+                  <ProtectedRoute>
                     <Fade in timeout={400}>
                       <Box>
                         <CadastroRefeicao />
                       </Box>
                     </Fade>
-                  } 
-                />
-                
-                {/* Rota 404 - redireciona para refeições */}
-                <Route path="*" element={<Navigate to="/refeicoes" replace />} />
-              </Routes>
-            </Suspense>
-          </Container>
+                  </ProtectedRoute>
+                } 
+              />
+              
+              {/* Rota 404 - redireciona baseado na autenticação */}
+              <Route 
+                path="*" 
+                element={
+                  authUtils.isAuthenticated() 
+                    ? <Navigate to="/refeicoes" replace />
+                    : <Navigate to="/login" replace />
+                } 
+              />
+            </Routes>
+          </Suspense>
         </Router>
       </ThemeProvider>
     </AppProvider>
