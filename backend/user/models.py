@@ -31,7 +31,6 @@ class UserManager(BaseUserManager):
 
         return user
 
-
 class User(AbstractBaseUser, PermissionsMixin):
     """User in the system"""
     email = models.EmailField(max_length=255, unique=True)
@@ -42,3 +41,46 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = "email"
+
+
+class UserProfile(models.Model):
+    OBJETIVO_CHOICES = [
+        ('emagrecer', 'Emagrecer'),
+        ('manter', 'Manter peso'),
+        ('ganhar', 'Ganhar peso'),
+    ]
+
+    SEXO_CHOICES = [
+        ('M', 'Masculino'),
+        ('F', 'Feminino'),
+    ]
+
+    NIVEL_ATIVIDADE_CHOICES = [
+        ('sedentario', 'Sedentário'),
+        ('leve', 'Levemente ativo (1-3x/semana)'),
+        ('moderado', 'Moderadamente ativo (3-5x/semana)'),
+        ('alto', 'Muito ativo (6-7x/semana)'),
+        ('extremo', 'Extremamente ativo (atleta)'),
+    ]
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    idade = models.IntegerField()
+    peso = models.FloatField(help_text="Peso em kg")
+    altura = models.FloatField(help_text="Altura em cm")
+    sexo = models.CharField(max_length=1, choices=SEXO_CHOICES)
+    nivel_atividade = models.CharField(max_length=20, choices=NIVEL_ATIVIDADE_CHOICES)
+    objetivo = models.CharField(max_length=20, choices=OBJETIVO_CHOICES)
+
+    def __str__(self):
+        return self.user.email
+
+
+class PlanoAlimentar(models.Model):
+    profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE, related_name='plano_alimentar')
+    calorias_diarias = models.IntegerField()
+    proteinas_diarias = models.FloatField(help_text="Proteínas em gramas")
+    carboidratos_diarios = models.FloatField(help_text="Carboidratos em gramas")
+    gorduras_diarias = models.FloatField(help_text="Gorduras em gramas")
+
+    def __str__(self):
+        return f"Plano Alimentar de {self.profile.user.email}"
