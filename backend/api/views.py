@@ -1,13 +1,16 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, GenericAPIView
 from rest_framework import status
 from api.serializers import AlimentoSerializer, RefeicaoAlimentoSerializer, RefeicaoSerializer
 from api.models import Alimento, Refeicao, RefeicaoAlimento
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
+# from .renderers import UserRenderer
 
 
 class AlimentoAPIView(ListAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = AlimentoSerializer
     queryset = Alimento.objects.all()
     ordering_fields = ['nome']
@@ -26,10 +29,12 @@ class AlimentoAPIView(ListAPIView):
         return qs[:10]
 
 
-class RefeicaoCreateView(APIView):
+class RefeicaoCreateView(GenericAPIView):
     """
     Cadastrar uma refeição com alimentos.
     """
+    permission_classes = [IsAuthenticated]
+    # serializer_class = RefeicaoSerializer
     def post(self, request, *args, **kwargs):
         nome = request.data.get("nome")
         descricao = request.data.get("descricao", "")

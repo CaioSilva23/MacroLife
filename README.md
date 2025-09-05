@@ -1,8 +1,8 @@
-# 🥗 MacroLife - Sistema de Gestão Nutricional
+# 🥗 NutriApp - Sistema de Gestão Nutricional
 
 <div align="center">
 
-![MacroLife](https://img.shields.io/badge/MacroLife-Nutrition%20Management-green?style=for-the-badge)
+![NutriApp](https://img.shields.io/badge/NutriApp-Nutrition%20Management-green?style=for-the-badge)
 ![Django](https://img.shields.io/badge/Django-5.2.6-092E20?style=for-the-badge&logo=django&logoColor=white)
 ![React](https://img.shields.io/badge/React-19.1.1-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![Material-UI](https://img.shields.io/badge/Material--UI-7.3.2-007FFF?style=for-the-badge&logo=mui&logoColor=white)
@@ -18,7 +18,7 @@
 
 ## 📋 Sobre o Projeto
 
-O **MacroLife** é uma aplicação web completa para gestão nutricional que permite aos usuários criar, gerenciar e acompanhar suas refeições personalizadas. Com uma base de dados nutricional baseada na Tabela TACO, o sistema oferece cálculos precisos de macronutrientes e uma interface moderna desenvolvida com React e Material-UI.
+O **NutriApp** é uma aplicação web completa para gestão nutricional que permite aos usuários criar, gerenciar e acompanhar suas refeições personalizadas. Com uma base de dados nutricional baseada na Tabela TACO, o sistema oferece cálculos precisos de macronutrientes e uma interface moderna desenvolvida com React e Material-UI.
 
 ### 🎯 Objetivos
 
@@ -88,8 +88,8 @@ O **MacroLife** é uma aplicação web completa para gestão nutricional que per
 
 ### **1. Clone o Repositório**
 ```bash
-git clone https://github.com/CaioSilva23/MacroLife.git
-cd MacroLife
+git clone https://github.com/CaioSilva23/NutriApp.git
+cd NutriApp
 ```
 
 ### **2. Configuração do Backend**
@@ -242,7 +242,7 @@ Content-Type: application/json
 ## 📊 Estrutura do Projeto
 
 ```
-MacroLife/
+NutriApp/
 ├── backend/                 # Django Backend
 │   ├── api/                # API aplicação
 │   │   ├── models.py       # Modelos de dados
@@ -375,6 +375,6 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para de
 
 **⭐ Se este projeto te ajudou, considere dar uma estrela!**
 
-![MacroLife](https://img.shields.io/github/stars/CaioSilva23/MacroLife?style=social)
+![NutriApp](https://img.shields.io/github/stars/CaioSilva23/NutriApp?style=social)
 
 </div>
