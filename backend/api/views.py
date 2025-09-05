@@ -44,7 +44,7 @@ class RefeicaoCreateView(GenericAPIView):
             return Response({"error": "Nome e itens são obrigatórios"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Criar refeição
-        refeicao = Refeicao.objects.create(nome=nome, descricao=descricao)
+        refeicao = Refeicao.objects.create(nome=nome, descricao=descricao, user=request.user)
 
         # Adicionar alimentos
         for item in itens:
@@ -81,6 +81,7 @@ class RefeicaoCreateView(GenericAPIView):
 
         refeicoes = RefeicaoSerializer(refeicoes, many=True)
         return Response(refeicoes.data, status=status.HTTP_200_OK)
+
 
 class RefeicaoDetailView(APIView):
     """
