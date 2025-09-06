@@ -112,7 +112,7 @@ const PreenchimentoPerfil = () => {
     },
     {
       titulo: 'Sexo',
-      subtitulo: 'Qual é o seu sexo biológico?',
+      subtitulo: 'Qual é o seu sexo?',
       icone: <Wc />,
       campo: 'sexo',
       tipo: 'radio',
