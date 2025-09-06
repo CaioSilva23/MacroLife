@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -26,16 +26,33 @@ import {
 } from '@mui/icons-material';
 import authUtils from '../../utils/auth';
 import Swal from 'sweetalert2';
+import { userService } from '../../services/api';
+
 
 export default function Header({ onNovaRefeicao, onChatbotOpen }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
-  
+  const [currentUser, setCurrentUser] = useState({});
+
   // Obter usuário atual com fallback
-  const currentUser = authUtils.getCurrentUser() || {};
-  const userName = currentUser.name || currentUser.username || 'Usuário';
-  const userEmail = currentUser.email || 'usuario@email.com';
+  // const currentUser = await userService.profile();
+  console.log('Usuário atual:', currentUser);
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
+
+  const fetchCurrentUser = async () => {
+    try {
+      const user = await userService.profile();
+      console.log('Usuário atual:', user);
+      setCurrentUser(user.data);
+    } catch (error) {
+      console.error('Erro ao obter usuário atual:', error);
+      return null;
+    }
+  };
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -237,10 +254,10 @@ export default function Header({ onNovaRefeicao, onChatbotOpen }) {
               <MenuItem disabled sx={{ bgcolor: '#f5f5f5' }}>
                 <Box>
                   <Typography variant="subtitle2" fontWeight="bold">
-                    {userName}
+                    {currentUser.name}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    {userEmail}
+                    {currentUser.email}
                   </Typography>
                 </Box>
               </MenuItem>
