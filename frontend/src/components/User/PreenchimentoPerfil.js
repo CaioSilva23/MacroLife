@@ -308,11 +308,17 @@ const PreenchimentoPerfil = () => {
 
       case 'radio':
         return (
-          <FormControl component="fieldset">
+          <FormControl component="fieldset" sx={{ width: '100%' }}>
             <RadioGroup
               value={valor}
               onChange={(e) => atualizarDados(etapa.campo, e.target.value)}
-              sx={{ gap: 2 }}
+              sx={{ 
+                gap: 2,
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
             >
               {etapa.opcoes.map((opcao) => (
                 <Paper
@@ -324,6 +330,11 @@ const PreenchimentoPerfil = () => {
                     border: valor === opcao.valor ? '2px solid #4CAF50' : '2px solid transparent',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
+                    flex: { xs: 'none', sm: 1 },
+                    minWidth: { xs: '100%', sm: '200px' },
+                    maxWidth: { xs: '100%', sm: '300px' },
+                    display: 'flex',
+                    justifyContent: 'center',
                     '&:hover': {
                       elevation: 3,
                       borderColor: '#4CAF50',
@@ -344,11 +355,19 @@ const PreenchimentoPerfil = () => {
                       />
                     }
                     label={
-                      <Typography variant="body1" fontWeight={valor === opcao.valor ? 'bold' : 'normal'}>
+                      <Typography 
+                        variant="body1" 
+                        fontWeight={valor === opcao.valor ? 'bold' : 'normal'}
+                        sx={{ textAlign: 'center' }}
+                      >
                         {opcao.label}
                       </Typography>
                     }
-                    sx={{ margin: 0, width: '100%' }}
+                    sx={{ 
+                      margin: 0, 
+                      width: '100%',
+                      justifyContent: 'center'
+                    }}
                   />
                 </Paper>
               ))}

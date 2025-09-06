@@ -269,6 +269,100 @@ export default function ListaRefeicoes({ onChatbotOpen }) {
     return objetivos[objetivo] || 'Objetivo não definido';
   };
 
+  // Componente de gráfico circular personalizado
+  const CircularProgressChart = ({ value, color, size = 120, strokeWidth = 8, children }) => {
+    const normalizedValue = Math.min(value, 100);
+    const radius = (size - strokeWidth) / 2;
+    const circumference = radius * 2 * Math.PI;
+    const strokeDasharray = `${(normalizedValue / 100) * circumference} ${circumference}`;
+    
+    return (
+      <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+        <svg width={size} height={size}>
+          {/* Background circle */}
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="none"
+            stroke={`${color}20`}
+            strokeWidth={strokeWidth}
+          />
+          {/* Progress circle */}
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="none"
+            stroke={color}
+            strokeWidth={strokeWidth}
+            strokeDasharray={strokeDasharray}
+            strokeDashoffset={circumference / 4}
+            strokeLinecap="round"
+            transform={`rotate(-90 ${size / 2} ${size / 2})`}
+            style={{
+              transition: 'stroke-dasharray 0.6s ease-in-out',
+            }}
+          />
+        </svg>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+          }}
+        >
+          {children}
+        </Box>
+      </Box>
+    );
+  };
+
+  // Componente de mini card de macronutriente
+  const MacroCard = ({ title, value, unit, color, progress, remaining }) => (
+    <Box sx={{
+      display: 'flex',
+      alignItems: 'center',
+      p: 2,
+      borderRadius: 2,
+      bgcolor: `${color}08`,
+      border: `1px solid ${color}20`,
+      mb: 1.5
+    }}>
+      <CircularProgressChart value={progress} color={color} size={60} strokeWidth={4}>
+        <Typography variant="caption" sx={{ fontWeight: 600, color: color, fontSize: '0.7rem' }}>
+          {progress.toFixed(0)}%
+        </Typography>
+      </CircularProgressChart>
+      
+      <Box sx={{ ml: 2, flex: 1 }}>
+        <Typography variant="h6" sx={{ color: color, fontWeight: 700, mb: 0.5 }}>
+          {value} {unit}
+        </Typography>
+        <Typography variant="caption" sx={{ color: '#666', textTransform: 'uppercase', letterSpacing: 0.5, fontWeight: 500 }}>
+          {title}
+        </Typography>
+        {remaining > 0 && (
+          <Typography variant="caption" sx={{ 
+            display: 'block',
+            color: '#FF6B00',
+            fontWeight: 600,
+            fontSize: '0.65rem',
+            mt: 0.25
+          }}>
+            Faltam {remaining.toFixed(unit === 'kcal' ? 0 : 1)}{unit === 'kcal' ? '' : 'g'}
+          </Typography>
+        )}
+      </Box>
+    </Box>
+  );
+
   if (loadingRefeicoes && refeicoes.length === 0) {
     return <RefeicoesSkeleton />;
   }
@@ -402,33 +496,31 @@ export default function ListaRefeicoes({ onChatbotOpen }) {
         </Fade>
       )}
 
-      {/* Resumo Nutricional Discreto */}
+      {/* Resumo Nutricional com Gráficos */}
       <Card elevation={1} sx={{ 
         mb: 3, 
         borderRadius: 3, 
-        bgcolor: 'rgba(255, 255, 255, 0.95)', 
+        bgcolor: 'rgba(255, 255, 255, 0.98)', 
         backdropFilter: 'blur(10px)',
         border: '1px solid rgba(76, 175, 80, 0.1)', 
-        boxShadow: '0 2px 12px rgba(76, 175, 80, 0.08)' 
+        boxShadow: '0 4px 20px rgba(76, 175, 80, 0.1)' 
       }}>
         <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
-          {/* Header compacto com objetivo */}
+          {/* Header */}
           <Box sx={{ 
             display: 'flex', 
             justifyContent: 'space-between', 
-            alignItems: 'flex-start', 
-            mb: 2,
-            flexWrap: 'wrap',
-            gap: 1
+            alignItems: 'center', 
+            mb: 3
           }}>
-            <Box sx={{ flex: 1, minWidth: 200 }}>
-              <Typography variant="h6" sx={{ 
-                fontWeight: 600, 
+            <Box>
+              <Typography variant="h5" sx={{ 
+                fontWeight: 700, 
                 color: '#2E7D32',
                 mb: 0.5,
-                fontSize: { xs: '1.1rem', sm: '1.25rem' }
+                fontSize: { xs: '1.25rem', sm: '1.5rem' }
               }}>
-                Resumo Nutricional
+                Dashboard Nutricional
               </Typography>
               <Box sx={{ 
                 display: 'flex',
@@ -441,11 +533,11 @@ export default function ListaRefeicoes({ onChatbotOpen }) {
                   display: 'flex',
                   alignItems: 'center',
                   gap: 0.5,
-                  fontSize: '0.875rem'
+                  fontSize: '0.9rem'
                 }}>
                   <Box component="span" sx={{ 
-                    width: 6, 
-                    height: 6, 
+                    width: 8, 
+                    height: 8, 
                     borderRadius: '50%', 
                     bgcolor: '#4CAF50' 
                   }} />
@@ -453,319 +545,191 @@ export default function ListaRefeicoes({ onChatbotOpen }) {
                 </Typography>
                 <Typography variant="caption" sx={{ 
                   color: 'rgba(51,51,51,0.6)',
-                  fontSize: '0.75rem'
+                  fontSize: '0.8rem'
                 }}>
                   • {refeicoes.length} {refeicoes.length === 1 ? 'refeição' : 'refeições'}
                 </Typography>
               </Box>
             </Box>
-            <Typography variant="caption" sx={{ 
-              color: 'rgba(51,51,51,0.5)',
-              fontSize: '0.7rem',
-              textAlign: 'right',
-              whiteSpace: 'nowrap'
-            }}>
-              {new Date(dataFiltro).toLocaleDateString('pt-BR')}
-            </Typography>
+            <Box sx={{ textAlign: 'right' }}>
+              <Typography variant="h6" sx={{ 
+                color: '#2E7D32',
+                fontWeight: 600,
+                mb: 0.5
+              }}>
+                {totaisGerais.kcal.toFixed(0)} kcal
+              </Typography>
+              <Typography variant="caption" sx={{ 
+                color: 'rgba(51,51,51,0.5)',
+                fontSize: '0.75rem'
+              }}>
+                {new Date(dataFiltro).toLocaleDateString('pt-BR')}
+              </Typography>
+            </Box>
           </Box>
 
-          {/* Grid de Macros Otimizado */}
-          <Grid container spacing={{ xs: 1.5, sm: 2 }}>
-            {/* Calorias */}
-            <Grid item xs={6} sm={3}>
+          {/* Layout Principal com Gráfico Central e Cards Laterais */}
+          <Grid container spacing={3} alignItems="stretch" justifyContent="center">
+
+            {/* Coluna Esquerda - Cards dos Macros */}
+            <Grid item xs={12} md={4}>
+              <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <MacroCard
+                  title="Calorias"
+                  value={totaisGerais.kcal.toFixed(0)}
+                  unit="kcal"
+                  color="#4CAF50"
+                  progress={progressoNutricional.kcal}
+                  remaining={diferenciasRestantes.kcal}
+                />
+                <MacroCard
+                  title="Carboidratos"
+                  value={totaisGerais.carbo.toFixed(1)}
+                  unit="g"
+                  color="#FF9800"
+                  progress={progressoNutricional.carbo}
+                  remaining={diferenciasRestantes.carbo}
+                />
+              </Box>
+            </Grid>
+
+            {/* Coluna Central - Gráfico Principal */}
+            <Grid item xs={12} md={4}>
               <Box sx={{ 
-                textAlign: 'center',
-                p: { xs: 1.5, sm: 2 },
-                borderRadius: 2,
-                bgcolor: 'rgba(76, 175, 80, 0.03)',
-                border: '1px solid rgba(76, 175, 80, 0.1)',
+                display: 'flex', 
+                flexDirection: 'column', 
+                alignItems: 'center',
                 height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between'
+                justifyContent: 'center',
+                py: 2
               }}>
-                <Box>
-                  <Typography variant="h4" sx={{ 
-                    fontWeight: 700, 
+                {/* Gráfico Circular Principal para Calorias */}
+                <CircularProgressChart 
+                  value={progressoNutricional.kcal} 
+                  color="#4CAF50" 
+                  size={180} 
+                  strokeWidth={12}
+                >
+                  <Typography variant="h3" sx={{ 
+                    fontWeight: 800, 
                     color: '#4CAF50',
-                    mb: 0.5,
-                    fontSize: { xs: '1.5rem', sm: '2rem' }
+                    fontSize: { xs: '2rem', sm: '2.5rem' }
                   }}>
-                    {totaisGerais.kcal.toFixed(0)}
+                    {progressoNutricional.kcal.toFixed(0)}%
                   </Typography>
                   <Typography variant="caption" sx={{ 
                     color: '#666',
                     textTransform: 'uppercase',
-                    letterSpacing: 0.5,
+                    letterSpacing: 1,
                     fontWeight: 600,
-                    fontSize: '0.7rem'
+                    mt: -0.5
                   }}>
-                    Calorias
+                    Meta Diária
                   </Typography>
-                </Box>
-                
-                <Box sx={{ mt: 1 }}>
-                  <LinearProgress 
-                    variant="determinate" 
-                    value={progressoNutricional.kcal} 
-                    sx={{ 
-                      height: 6, 
-                      borderRadius: 3,
-                      bgcolor: 'rgba(76, 175, 80, 0.15)',
-                      '& .MuiLinearProgress-bar': {
-                        bgcolor: '#4CAF50',
-                        borderRadius: 3
-                      }
-                    }}
-                  />
-                  <Typography variant="caption" sx={{ 
-                    color: '#999', 
-                    fontSize: '0.65rem',
-                    display: 'block',
-                    mt: 0.5
-                  }}>
-                    {progressoNutricional.kcal.toFixed(0)}% da meta
-                  </Typography>
-                  {diferenciasRestantes.kcal > 0 && (
-                    <Typography variant="caption" sx={{ 
-                      display: 'block',
-                      color: '#FF6B00',
-                      fontWeight: 600,
-                      fontSize: '0.65rem',
-                      mt: 0.25
-                    }}>
-                      Faltam {diferenciasRestantes.kcal.toFixed(0)}
-                    </Typography>
+                </CircularProgressChart>
+
+                {/* Indicadores de Status */}
+                <Box sx={{ mt: 2, textAlign: 'center' }}>
+                  {progressoNutricional.kcal >= 100 ? (
+                    <Chip 
+                      label="Meta Atingida! 🎯" 
+                      color="success" 
+                      variant="filled"
+                      sx={{ fontWeight: 600 }}
+                    />
+                  ) : diferenciasRestantes.kcal <= 300 ? (
+                    <Chip 
+                      label="Quase lá! 💪" 
+                      color="warning" 
+                      variant="filled"
+                      sx={{ fontWeight: 600 }}
+                    />
+                  ) : (
+                    <Chip 
+                      label={`Faltam ${diferenciasRestantes.kcal.toFixed(0)} kcal`}
+                      color="primary" 
+                      variant="outlined"
+                      sx={{ fontWeight: 600 }}
+                    />
                   )}
                 </Box>
               </Box>
             </Grid>
 
-            {/* Carboidratos */}
-            <Grid item xs={6} sm={3}>
-              <Box sx={{ 
-                textAlign: 'center',
-                p: { xs: 1.5, sm: 2 },
-                borderRadius: 2,
-                bgcolor: 'rgba(255, 152, 0, 0.03)',
-                border: '1px solid rgba(255, 152, 0, 0.1)',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between'
-              }}>
-                <Box>
-                  <Typography variant="h4" sx={{ 
-                    fontWeight: 700, 
-                    color: '#FF9800',
-                    mb: 0.5,
-                    fontSize: { xs: '1.5rem', sm: '2rem' }
-                  }}>
-                    {totaisGerais.carbo.toFixed(1)}
-                  </Typography>
-                  <Typography variant="caption" sx={{ 
-                    color: '#666',
-                    textTransform: 'uppercase',
-                    letterSpacing: 0.5,
-                    fontWeight: 600,
-                    fontSize: '0.7rem'
-                  }}>
-                    Carboidratos
-                  </Typography>
-                </Box>
-                
-                <Box sx={{ mt: 1 }}>
-                  <LinearProgress 
-                    variant="determinate" 
-                    value={progressoNutricional.carbo} 
-                    sx={{ 
-                      height: 6, 
-                      borderRadius: 3,
-                      bgcolor: 'rgba(255, 152, 0, 0.15)',
-                      '& .MuiLinearProgress-bar': {
-                        bgcolor: '#FF9800',
-                        borderRadius: 3
-                      }
-                    }}
-                  />
-                  <Typography variant="caption" sx={{ 
-                    color: '#999', 
-                    fontSize: '0.65rem',
-                    display: 'block',
-                    mt: 0.5
-                  }}>
-                    {progressoNutricional.carbo.toFixed(0)}% da meta
-                  </Typography>
-                  {diferenciasRestantes.carbo > 0 && (
-                    <Typography variant="caption" sx={{ 
-                      display: 'block',
-                      color: '#FF6B00',
-                      fontWeight: 600,
-                      fontSize: '0.65rem',
-                      mt: 0.25
-                    }}>
-                      Faltam {diferenciasRestantes.carbo.toFixed(1)}g
-                    </Typography>
-                  )}
-                </Box>
-              </Box>
-            </Grid>
-
-            {/* Proteínas */}
-            <Grid item xs={6} sm={3}>
-              <Box sx={{ 
-                textAlign: 'center',
-                p: { xs: 1.5, sm: 2 },
-                borderRadius: 2,
-                bgcolor: 'rgba(33, 150, 243, 0.03)',
-                border: '1px solid rgba(33, 150, 243, 0.1)',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between'
-              }}>
-                <Box>
-                  <Typography variant="h4" sx={{ 
-                    fontWeight: 700, 
-                    color: '#2196F3',
-                    mb: 0.5,
-                    fontSize: { xs: '1.5rem', sm: '2rem' }
-                  }}>
-                    {totaisGerais.proteina.toFixed(1)}
-                  </Typography>
-                  <Typography variant="caption" sx={{ 
-                    color: '#666',
-                    textTransform: 'uppercase',
-                    letterSpacing: 0.5,
-                    fontWeight: 600,
-                    fontSize: '0.7rem'
-                  }}>
-                    Proteínas
-                  </Typography>
-                </Box>
-                
-                <Box sx={{ mt: 1 }}>
-                  <LinearProgress 
-                    variant="determinate" 
-                    value={progressoNutricional.proteina} 
-                    sx={{ 
-                      height: 6, 
-                      borderRadius: 3,
-                      bgcolor: 'rgba(33, 150, 243, 0.15)',
-                      '& .MuiLinearProgress-bar': {
-                        bgcolor: '#2196F3',
-                        borderRadius: 3
-                      }
-                    }}
-                  />
-                  <Typography variant="caption" sx={{ 
-                    color: '#999', 
-                    fontSize: '0.65rem',
-                    display: 'block',
-                    mt: 0.5
-                  }}>
-                    {progressoNutricional.proteina.toFixed(0)}% da meta
-                  </Typography>
-                  {diferenciasRestantes.proteina > 0 && (
-                    <Typography variant="caption" sx={{ 
-                      display: 'block',
-                      color: '#FF6B00',
-                      fontWeight: 600,
-                      fontSize: '0.65rem',
-                      mt: 0.25
-                    }}>
-                      Faltam {diferenciasRestantes.proteina.toFixed(1)}g
-                    </Typography>
-                  )}
-                </Box>
-              </Box>
-            </Grid>
-
-            {/* Gorduras */}
-            <Grid item xs={6} sm={3}>
-              <Box sx={{ 
-                textAlign: 'center',
-                p: { xs: 1.5, sm: 2 },
-                borderRadius: 2,
-                bgcolor: 'rgba(156, 39, 176, 0.03)',
-                border: '1px solid rgba(156, 39, 176, 0.1)',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between'
-              }}>
-                <Box>
-                  <Typography variant="h4" sx={{ 
-                    fontWeight: 700, 
-                    color: '#9C27B0',
-                    mb: 0.5,
-                    fontSize: { xs: '1.5rem', sm: '2rem' }
-                  }}>
-                    {totaisGerais.gordura.toFixed(1)}
-                  </Typography>
-                  <Typography variant="caption" sx={{ 
-                    color: '#666',
-                    textTransform: 'uppercase',
-                    letterSpacing: 0.5,
-                    fontWeight: 600,
-                    fontSize: '0.7rem'
-                  }}>
-                    Gorduras
-                  </Typography>
-                </Box>
-                
-                <Box sx={{ mt: 1 }}>
-                  <LinearProgress 
-                    variant="determinate" 
-                    value={progressoNutricional.gordura} 
-                    sx={{ 
-                      height: 6, 
-                      borderRadius: 3,
-                      bgcolor: 'rgba(156, 39, 176, 0.15)',
-                      '& .MuiLinearProgress-bar': {
-                        bgcolor: '#9C27B0',
-                        borderRadius: 3
-                      }
-                    }}
-                  />
-                  <Typography variant="caption" sx={{ 
-                    color: '#999', 
-                    fontSize: '0.65rem',
-                    display: 'block',
-                    mt: 0.5
-                  }}>
-                    {progressoNutricional.gordura.toFixed(0)}% da meta
-                  </Typography>
-                  {diferenciasRestantes.gordura > 0 && (
-                    <Typography variant="caption" sx={{ 
-                      display: 'block',
-                      color: '#FF6B00',
-                      fontWeight: 600,
-                      fontSize: '0.65rem',
-                      mt: 0.25
-                    }}>
-                      Faltam {diferenciasRestantes.gordura.toFixed(1)}g
-                    </Typography>
-                  )}
-                </Box>
+            {/* Coluna Direita - Cards dos Macros */}
+            <Grid item xs={12} md={4}>
+              <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <MacroCard
+                  title="Proteínas"
+                  value={totaisGerais.proteina.toFixed(1)}
+                  unit="g"
+                  color="#2196F3"
+                  progress={progressoNutricional.proteina}
+                  remaining={diferenciasRestantes.proteina}
+                />
+                <MacroCard
+                  title="Gorduras"
+                  value={totaisGerais.gordura.toFixed(1)}
+                  unit="g"
+                  color="#9C27B0"
+                  progress={progressoNutricional.gordura}
+                  remaining={diferenciasRestantes.gordura}
+                />
               </Box>
             </Grid>
           </Grid>
 
-          {/* Resumo das metas compacto */}
+          {/* Footer com Metas */}
           <Box sx={{ 
-            mt: 2, 
-            pt: 1.5, 
+            mt: 3, 
+            pt: 2, 
             borderTop: '1px solid rgba(76, 175, 80, 0.1)',
-            textAlign: 'center'
+            bgcolor: 'rgba(76, 175, 80, 0.02)',
+            borderRadius: 2,
+            p: 2
           }}>
-            <Typography variant="caption" sx={{ 
-              color: '#888',
-              fontSize: '0.7rem',
-              fontWeight: 500
+            <Typography variant="body2" sx={{ 
+              color: '#2E7D32',
+              textAlign: 'center',
+              fontWeight: 600,
+              mb: 1
             }}>
-              <strong>Metas diárias:</strong> {macrosUsuario.calorias_diarias} kcal • {macrosUsuario.carboidratos_diarios}g carb • {macrosUsuario.proteinas_diarias}g prot • {macrosUsuario.gorduras_diarias}g gord
+              Metas Diárias Estabelecidas
             </Typography>
+            <Grid container spacing={2} justifyContent="center">
+              <Grid item>
+                <Box sx={{ textAlign: 'center' }}>
+                  <Typography variant="h6" sx={{ color: '#4CAF50', fontWeight: 700 }}>
+                    {macrosUsuario.calorias_diarias}
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#666' }}>kcal</Typography>
+                </Box>
+              </Grid>
+              <Grid item>
+                <Box sx={{ textAlign: 'center' }}>
+                  <Typography variant="h6" sx={{ color: '#FF9800', fontWeight: 700 }}>
+                    {macrosUsuario.carboidratos_diarios}g
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#666' }}>carb</Typography>
+                </Box>
+              </Grid>
+              <Grid item>
+                <Box sx={{ textAlign: 'center' }}>
+                  <Typography variant="h6" sx={{ color: '#2196F3', fontWeight: 700 }}>
+                    {macrosUsuario.proteinas_diarias}g
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#666' }}>prot</Typography>
+                </Box>
+              </Grid>
+              <Grid item>
+                <Box sx={{ textAlign: 'center' }}>
+                  <Typography variant="h6" sx={{ color: '#9C27B0', fontWeight: 700 }}>
+                    {macrosUsuario.gorduras_diarias}g
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#666' }}>gord</Typography>
+                </Box>
+              </Grid>
+            </Grid>
           </Box>
         </CardContent>
       </Card>
