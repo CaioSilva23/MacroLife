@@ -183,8 +183,8 @@ const ListaRefeicoes = () => {
   };
 
   const handleRefeicaoCriada = (novaRefeicao) => {
-    // Recarregar refeições para atualizar a lista
-    carregarRefeicoes();
+    // A refeição já foi adicionada ao contexto no modal, não precisamos fazer nada aqui
+    console.log('Refeição criada com sucesso:', novaRefeicao);
   };
 
   const formatarData = (dataString) => {
@@ -198,16 +198,6 @@ const ListaRefeicoes = () => {
   // Função para formatar data para filtros (YYYY-MM-DD)
   const formatarDataParaFiltro = (data = new Date()) => {
     return data.toISOString().split('T')[0];
-  };
-
-  // Função para obter data atual formatada
-  const obterDataAtual = () => {
-    const hoje = new Date();
-    return {
-      formatada: formatarData(hoje),
-      paraFiltro: formatarDataParaFiltro(hoje),
-      timestamp: hoje.getTime()
-    };
   };
 
   // Funções para navegação de data
@@ -1045,6 +1035,7 @@ const ListaRefeicoes = () => {
         open={modalCadastroAberto}
         onClose={fecharModalCadastro}
         onRefeicaoCriada={handleRefeicaoCriada}
+        dataRefeicao={dataFiltro}
       />
     </Container>
   );

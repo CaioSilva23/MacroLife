@@ -44,7 +44,7 @@ import {
 import { alimentosService, refeicoesService } from '../../services/api';
 import Swal from "sweetalert2";
 
-const ModalCadastroRefeicao = ({ open, onClose, onRefeicaoCriada }) => {
+const ModalCadastroRefeicao = ({ open, onClose, onRefeicaoCriada, dataRefeicao }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { state, actions, cache } = useApp();
@@ -192,9 +192,9 @@ const ModalCadastroRefeicao = ({ open, onClose, onRefeicaoCriada }) => {
 
       const response = await refeicoesService.criar(dadosRefeicao);
       
-      // Adicionar a nova refeição ao cache
-      const hoje = new Date().toISOString().split('T')[0];
-      actions.addRefeicao(response.data, hoje);
+      // Usar a data da refeição passada como prop ou a data atual como fallback
+      const dataParaCache = dataRefeicao || new Date().toISOString().split('T')[0];
+      actions.addRefeicao(response.data, dataParaCache);
       
       Swal.fire("Sucesso", "A refeição foi criada com sucesso!", "success");
 
@@ -210,7 +210,7 @@ const ModalCadastroRefeicao = ({ open, onClose, onRefeicaoCriada }) => {
     } finally {
       actions.setLoading('criando', false);
     }
-  }, [nome, descricao, itensRefeicao, actions, onClose, onRefeicaoCriada]);
+  }, [nome, descricao, itensRefeicao, actions, onClose, onRefeicaoCriada, dataRefeicao]);
 
   const totais = calcularTotais();
 

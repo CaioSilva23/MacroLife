@@ -75,9 +75,9 @@ class RefeicaoCreateView(GenericAPIView):
 
         data = request.query_params.get('data', None)
         if data:
-            refeicoes = Refeicao.objects.filter(data_criacao__date=data)
+            refeicoes = Refeicao.objects.filter(data_criacao__date=data, user=request.user)
         else:
-            refeicoes = Refeicao.objects.all()
+            refeicoes = Refeicao.objects.filter(user=request.user)
 
         refeicoes = RefeicaoSerializer(refeicoes, many=True)
         return Response(refeicoes.data, status=status.HTTP_200_OK)

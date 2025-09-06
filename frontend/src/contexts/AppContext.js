@@ -4,6 +4,7 @@ import React, { createContext, useContext, useReducer, useCallback } from 'react
 const initialState = {
   refeicoes: [],
   alimentos: [],
+  currentDate: null, // Armazena a data atualmente sendo visualizada
   loading: {
     refeicoes: false,
     alimentos: false,
@@ -49,6 +50,7 @@ const appReducer = (state, action) => {
       return {
         ...state,
         refeicoes: action.payload,
+        currentDate: action.date, // Armazenar a data atual
         cache: {
           ...state.cache,
           refeicoes: {
@@ -77,30 +79,43 @@ const appReducer = (state, action) => {
       };
 
     case ACTIONS.ADD_REFEICAO:
-      const newRefeicoes = [...state.refeicoes, action.payload];
+      // Obter refeições existentes para a data
+      const existingRefeicoes = state.cache.refeicoes[action.date] || [];
+      const updatedRefeicoes = [...existingRefeicoes, action.payload];
+      
+      // Atualizar lista atual apenas se for a data que está sendo visualizada
+      const newCurrentRefeicoes = state.currentDate === action.date 
+        ? updatedRefeicoes 
+        : state.refeicoes;
+      
       return {
         ...state,
-        refeicoes: newRefeicoes,
+        refeicoes: newCurrentRefeicoes,
         cache: {
           ...state.cache,
           refeicoes: {
             ...state.cache.refeicoes,
-            [action.date]: newRefeicoes,
+            [action.date]: updatedRefeicoes,
           }
         },
       };
 
     case ACTIONS.REMOVE_REFEICAO:
+      // Atualizar lista atual
       const filteredRefeicoes = state.refeicoes.filter(r => r.id !== action.id);
+      
+      // Atualizar cache para todas as datas
+      const updatedCache = Object.keys(state.cache.refeicoes).reduce((acc, date) => {
+        acc[date] = state.cache.refeicoes[date].filter(r => r.id !== action.id);
+        return acc;
+      }, {});
+      
       return {
         ...state,
         refeicoes: filteredRefeicoes,
         cache: {
           ...state.cache,
-          refeicoes: Object.keys(state.cache.refeicoes).reduce((acc, date) => {
-            acc[date] = state.cache.refeicoes[date].filter(r => r.id !== action.id);
-            return acc;
-          }, {}),
+          refeicoes: updatedCache,
         },
       };
 
