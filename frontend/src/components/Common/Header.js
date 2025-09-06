@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -13,6 +12,8 @@ import {
   Divider,
   ListItemIcon,
   ListItemText,
+  Tooltip,
+  Badge
 } from '@mui/material';
 import {
   Restaurant,
@@ -20,15 +21,21 @@ import {
   AccountCircle,
   Logout,
   Settings,
+  SmartToy as ChatIcon,
+  Notifications as NotificationsIcon
 } from '@mui/icons-material';
 import authUtils from '../../utils/auth';
 import Swal from 'sweetalert2';
 
-
-export default function Header({ onNovaRefeicao }) {
+export default function Header({ onNovaRefeicao, onChatbotOpen }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
+  
+  // Obter usuário atual com fallback
+  const currentUser = authUtils.getCurrentUser() || {};
+  const userName = currentUser.name || currentUser.username || 'Usuário';
+  const userEmail = currentUser.email || 'usuario@email.com';
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -57,9 +64,26 @@ export default function Header({ onNovaRefeicao }) {
 
   return (
     <>
-      <Paper elevation={0} sx={{ p: 3, mb: 3, borderRadius: 2, background: 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)', border: '1px solid #E0E0E0', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+      <Paper 
+        elevation={0} 
+        sx={{ 
+          p: 3, 
+          mb: 3, 
+          borderRadius: 2, 
+          background: 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)', 
+          border: '1px solid #E0E0E0', 
+          boxShadow: '0 4px 12px rgba(0,0,0,0.1)' 
+        }}
+      >
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Box display="flex" alignItems="center" gap={2} sx={{ cursor: 'pointer' }} onClick={() => navigate('/refeicoes')}>
+          {/* Logo e Título */}
+          <Box 
+            display="flex" 
+            alignItems="center" 
+            gap={2} 
+            sx={{ cursor: 'pointer' }} 
+            onClick={() => navigate('/refeicoes')}
+          >
             <Avatar sx={{ bgcolor: '#FFFFFF', color: '#4CAF50', width: 56, height: 56 }}>
               <Restaurant fontSize="large" />
             </Avatar>
@@ -81,7 +105,63 @@ export default function Header({ onNovaRefeicao }) {
               </Typography>
             </Box>
           </Box>
+
+          {/* Ações do Header */}
           <Box display="flex" alignItems="center" gap={2}>
+            {/* Botão do Chatbot - DESTAQUE PRINCIPAL */}
+            <Tooltip title="🤖 Assistente Nutricional IA - Tire suas dúvidas sobre nutrição!" placement="bottom">
+              <IconButton
+                onClick={() => {
+                  console.log('Botão chatbot clicado!', typeof onChatbotOpen);
+                  if (onChatbotOpen) {
+                    onChatbotOpen();
+                  } else {
+                    console.error('onChatbotOpen não está definido!');
+                  }
+                }}
+                sx={{
+                  bgcolor: 'rgba(255, 255, 255, 0.2)',
+                  color: 'white',
+                  backdropFilter: 'blur(10px)',
+                  border: '2px solid rgba(255, 255, 255, 0.4)',
+                  width: 56,
+                  height: 56,
+                  '&:hover': {
+                    bgcolor: 'rgba(255, 255, 255, 0.3)',
+                    transform: 'scale(1.1)',
+                    boxShadow: '0 6px 20px rgba(0, 0, 0, 0.3)'
+                  },
+                  transition: 'all 0.3s ease',
+                  animation: 'chatPulse 3s infinite',
+                  position: 'relative'
+                }}
+              >
+                <ChatIcon sx={{ fontSize: 28 }} />
+                {/* Badge indicativo */}
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: -2,
+                    right: -2,
+                    width: 16,
+                    height: 16,
+                    bgcolor: '#FF4081',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '10px',
+                    fontWeight: 'bold',
+                    color: 'white',
+                    animation: 'bounce 2s infinite'
+                  }}
+                >
+                  AI
+                </Box>
+              </IconButton>
+            </Tooltip>
+
+            {/* Nova Refeição */}
             <Button 
               variant="contained"
               onClick={onNovaRefeicao || (() => navigate('/refeicoes/novo'))}
@@ -98,82 +178,125 @@ export default function Header({ onNovaRefeicao }) {
                   transform: 'translateY(-2px)',
                   boxShadow: '0 4px 12px rgba(255, 255, 255, 0.3)'
                 },
-                transition: 'all 0.3s ease'
+                transition: 'all 0.3s ease',
+                minWidth: '160px'
               }}
             >
               Nova Refeição
             </Button>
-            
-            {/* Menu do usuário */}
+
+            {/* Notificações */}
+            <Tooltip title="Notificações" placement="bottom">
+              <IconButton sx={{ color: 'white' }}>
+                <Badge badgeContent={0} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            </Tooltip>
+
+            {/* Menu do Usuário */}
             <IconButton
               onClick={handleMenuClick}
               sx={{ 
-                color: '#FFFFFF',
-                bgcolor: 'rgba(255, 255, 255, 0.1)',
+                color: 'white',
                 '&:hover': {
-                  bgcolor: 'rgba(255, 255, 255, 0.2)',
+                  transform: 'scale(1.05)'
                 }
               }}
             >
-              <AccountCircle sx={{ fontSize: '1.8rem' }} />
+              <Avatar 
+                sx={{ 
+                  bgcolor: 'rgba(255,255,255,0.2)', 
+                  color: 'white',
+                  border: '2px solid rgba(255,255,255,0.3)',
+                  width: 40,
+                  height: 40
+                }}
+              >
+                <AccountCircle />
+              </Avatar>
             </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleMenuClose}
-            onClick={handleMenuClose}
-            PaperProps={{
-              elevation: 3,
-              sx: {
-                overflow: 'visible',
-                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                mt: 1.5,
-                '& .MuiAvatar-root': {
-                  width: 32,
-                  height: 32,
-                  ml: -0.5,
-                  mr: 1,
-                },
-                '&:before': {
-                  content: '""',
-                  display: 'block',
-                  position: 'absolute',
-                  top: 0,
-                  right: 14,
-                  width: 10,
-                  height: 10,
-                  bgcolor: 'background.paper',
-                  transform: 'translateY(-50%) rotate(45deg)',
-                  zIndex: 0,
-                },
-              },
-            }}
-            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-          >
-            <MenuItem>
-              <ListItemIcon>
-                <AccountCircle fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Meu Perfil</ListItemText>
-            </MenuItem>
-            <MenuItem>
-              <ListItemIcon>
-                <Settings fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Configurações</ListItemText>
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleLogout} sx={{ color: 'error.main' }}>
-              <ListItemIcon>
-                <Logout fontSize="small" sx={{ color: 'error.main' }} />
-              </ListItemIcon>
-              <ListItemText>Sair</ListItemText>
-            </MenuItem>
-          </Menu>
+
+            {/* Menu Dropdown */}
+            <Menu
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleMenuClose}
+              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+              PaperProps={{
+                sx: {
+                  borderRadius: '12px',
+                  minWidth: 200,
+                  mt: 1,
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
+                  overflow: 'hidden'
+                }
+              }}
+            >
+              <MenuItem disabled sx={{ bgcolor: '#f5f5f5' }}>
+                <Box>
+                  <Typography variant="subtitle2" fontWeight="bold">
+                    {userName}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {userEmail}
+                  </Typography>
+                </Box>
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={handleMenuClose}>
+                <ListItemIcon>
+                  <AccountCircle fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Meu Perfil</ListItemText>
+              </MenuItem>
+              <MenuItem onClick={handleMenuClose}>
+                <ListItemIcon>
+                  <Settings fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Configurações</ListItemText>
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={handleLogout} sx={{ color: '#f44336' }}>
+                <ListItemIcon>
+                  <Logout fontSize="small" sx={{ color: '#f44336' }} />
+                </ListItemIcon>
+                <ListItemText>Sair</ListItemText>
+              </MenuItem>
+            </Menu>
           </Box>
         </Box>
       </Paper>
+
+      {/* Animações CSS */}
+      <style>
+        {`
+          @keyframes chatPulse {
+            0% {
+              box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+            }
+            50% {
+              box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+            }
+            100% {
+              box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+            }
+          }
+
+          @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+              transform: translateY(0);
+            }
+            40% {
+              transform: translateY(-4px);
+            }
+            60% {
+              transform: translateY(-2px);
+            }
+          }
+        `}
+      </style>
     </>
   );
 }

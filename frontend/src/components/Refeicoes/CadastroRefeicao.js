@@ -46,7 +46,7 @@ import {
 import { alimentosService, refeicoesService } from '../../services/api';
 import Swal from "sweetalert2";
 
-const CadastroRefeicao = () => {
+const CadastroRefeicao = ({ onChatbotOpen }) => {
   const navigate = useNavigate();
   const { state, actions, cache } = useApp();
   

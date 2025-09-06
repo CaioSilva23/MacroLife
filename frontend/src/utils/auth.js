@@ -50,6 +50,11 @@ export const authUtils = {
     }
   },
 
+  // Obter dados do usuário atual (alias para getUserFromToken)
+  getCurrentUser: () => {
+    return authUtils.getUserFromToken();
+  },
+
   // Verificar se o token está expirado
   isTokenExpired: () => {
     const user = authUtils.getUserFromToken();

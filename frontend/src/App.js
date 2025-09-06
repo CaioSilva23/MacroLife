@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, Container, Box, CircularProgress, Fade } from '@mui/material';
@@ -8,6 +8,7 @@ import CadastroRefeicao from './components/Refeicoes/CadastroRefeicao';
 import Login from './components/User/Login';
 import Cadastro from './components/User/Cadastro';
 import VerificacaoPerfil from './components/User/VerificacaoPerfil';
+import ChatbotComponent from './components/Chatbot/ChatbotComponent';
 import authUtils from './utils/auth';
 import './App.css';
 
@@ -86,6 +87,15 @@ const PublicRoute = ({ children }) => {
 };
 
 function App() {
+  const [chatbotOpen, setChatbotOpen] = useState(false);
+
+  const handleChatbotOpen = () => {
+    setChatbotOpen(true);
+  };
+
+  const handleChatbotClose = () => {
+    setChatbotOpen(false);
+  };
   return (
     <AppProvider>
       <ThemeProvider theme={theme}>
@@ -152,7 +162,7 @@ function App() {
                     <Container maxWidth="lg" sx={{ py: 2 }}>
                       <Fade in timeout={400}>
                         <Box>
-                          <ListaRefeicoes />
+                          <ListaRefeicoes onChatbotOpen={handleChatbotOpen} />
                         </Box>
                       </Fade>
                     </Container>
@@ -166,7 +176,7 @@ function App() {
                   <ProtectedRoute>
                     <Fade in timeout={400}>
                       <Box>
-                        <CadastroRefeicao />
+                        <CadastroRefeicao onChatbotOpen={handleChatbotOpen} />
                       </Box>
                     </Fade>
                   </ProtectedRoute>
@@ -196,6 +206,14 @@ function App() {
                 } 
               />
             </Routes>
+            
+            {/* Chatbot disponível em todas as páginas para usuários logados */}
+            {authUtils.isAuthenticated() && (
+              <ChatbotComponent 
+                open={chatbotOpen} 
+                onClose={handleChatbotClose} 
+              />
+            )}
           </Suspense>
         </Router>
       </ThemeProvider>
