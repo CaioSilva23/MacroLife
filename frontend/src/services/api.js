@@ -86,6 +86,11 @@ export const refeicoesService = {
     return api.post('/refeicoes/', data);
   },
 
+  // Atualizar refeição
+  atualizar: (id, data) => {
+    return api.put(`/refeicoes/${id}/`, data);
+  },
+
   // Deletar refeição
   deletar: (id) => {
     return api.delete(`/refeicoes/${id}/`);

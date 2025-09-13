@@ -179,7 +179,7 @@ export default function Header({ onNovaRefeicao, onChatbotOpen }) {
             </Tooltip>
 
             {/* Nova Refeição */}
-            <Button 
+            {/* <Button 
               variant="contained"
               onClick={onNovaRefeicao || (() => navigate('/refeicoes/novo'))}
               startIcon={<Add />}
@@ -200,7 +200,7 @@ export default function Header({ onNovaRefeicao, onChatbotOpen }) {
               }}
             >
               Nova Refeição
-            </Button>
+            </Button> */}
 
             {/* Notificações */}
             <Tooltip title="Notificações" placement="bottom">

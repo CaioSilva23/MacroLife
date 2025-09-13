@@ -1,6 +1,7 @@
 from django.db import models
 from user.models import User
 
+
 class Alimento(models.Model):
     """
     Base de alimentos (ex: TACO).
@@ -27,6 +28,7 @@ class Refeicao(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
     descricao = models.TextField(blank=True, null=True)
+    essencial = models.BooleanField(default=False)
     data_criacao = models.DateTimeField(auto_now_add=True)
     data_atualizacao = models.DateTimeField(auto_now=True)
 
@@ -35,18 +37,26 @@ class Refeicao(models.Model):
 
     @property
     def total_kcal(self):
+        if not self.itens.exists():
+            return 0
         return sum(item.kcal_total for item in self.itens.all())
 
     @property
     def total_carbo(self):
+        if not self.itens.exists():
+            return 0
         return sum(item.carbo_total for item in self.itens.all())
 
     @property
     def total_proteina(self):
+        if not self.itens.exists():
+            return 0
         return sum(item.proteina_total for item in self.itens.all())
 
     @property
     def total_gordura(self):
+        if not self.itens.exists():
+            return 0
         return sum(item.gordura_total for item in self.itens.all())
 
 
@@ -57,6 +67,9 @@ class RefeicaoAlimento(models.Model):
     refeicao = models.ForeignKey(Refeicao, on_delete=models.CASCADE, related_name="itens")
     alimento = models.ForeignKey(Alimento, on_delete=models.CASCADE)
     quantidade_g = models.FloatField(help_text="Quantidade em gramas")
+
+    data_criacao = models.DateTimeField(auto_now_add=True)
+    data_atualizacao = models.DateTimeField(auto_now=True)
 
     @property
     def kcal_total(self):

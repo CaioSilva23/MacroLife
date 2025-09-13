@@ -53,6 +53,7 @@ class RefeicaoSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "nome",
+            "essencial",
             "descricao",
             "data_criacao",
             "itens",

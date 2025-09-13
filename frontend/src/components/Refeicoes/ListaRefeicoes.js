@@ -65,6 +65,8 @@ import Swal from "sweetalert2";
 import Header from '../Common/Header';
 import authUtils from '../../utils/auth';
 import ModalCadastroRefeicao from './ModalCadastroRefeicao';
+// import ModalAdicionarAlimentos from './ModalAdicionarAlimentos';
+
 
 export default function ListaRefeicoes({ onChatbotOpen }) {
   const navigate = useNavigate();
@@ -77,6 +79,8 @@ export default function ListaRefeicoes({ onChatbotOpen }) {
   const [dialogAberto, setDialogAberto] = useState(false);
   const [refeicaoSelecionada, setRefeicaoSelecionada] = useState(null);
   const [modalCadastroAberto, setModalCadastroAberto] = useState(false);
+  const [refeicaoUpdate, setRefeicaoUpdate] = useState(null);
+
   const [dataFiltro, setDataFiltro] = useState(() => {
     const hoje = new Date();
     return hoje.toISOString().split('T')[0]; // formato YYYY-MM-DD
@@ -189,9 +193,15 @@ export default function ListaRefeicoes({ onChatbotOpen }) {
     setModalCadastroAberto(true);
   };
 
+  const abrirModalCadastroComRefeicao = (refeicao) => {
+    setRefeicaoUpdate(refeicao);
+    setModalCadastroAberto(true)
+  }
+
   const fecharModalCadastro = () => {
     setModalCadastroAberto(false);
   };
+
 
   const handleRefeicaoCriada = (novaRefeicao) => {
     // A refeição já foi adicionada ao contexto no modal, não precisamos fazer nada aqui
@@ -371,7 +381,11 @@ export default function ListaRefeicoes({ onChatbotOpen }) {
     <Container maxWidth="xl" sx={{ py: 2 }}>
       {/* Header */}
 
-      <Header onNovaRefeicao={abrirModalCadastro} onChatbotOpen={onChatbotOpen} />
+      <Header 
+        onNovaRefeicao={abrirModalCadastro} 
+        onChatbotOpen={onChatbotOpen} 
+        refeicaoParaEditar={refeicaoUpdate}
+      />
 
       {/* Floating Action Button para Mobile */}
       <Fab
@@ -733,17 +747,366 @@ export default function ListaRefeicoes({ onChatbotOpen }) {
           </Box>
         </CardContent>
       </Card>
- 
-{/* 
-      loading  === 'a'? (
-        <Box display="flex" justifyContent="center" py={8}>
-          <CircularProgress size={60} />
-        </Box>
-      ) :  */}
+      
+      <Box>
+        {refeicoes.map((refeicao, index) => (
+          <Grow
+            key={refeicao.id}
+            in={true}
+            timeout={300 + (index * 100)}
+          >
+            <Accordion
+              expanded={expandedRefeicao === `panel-${refeicao.id}`}
+              onChange={handleAccordionChange(`panel-${refeicao.id}`)}
+              sx={{
+                mb: 2,
+                borderRadius: '12px !important',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                '&:before': { display: 'none' },
+                '&.Mui-expanded': {
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
+                },
+                transition: 'all 0.3s ease',
+              }}
+            >
+            <AccordionSummary
+              expandIcon={<ExpandMore sx={{ color: '#4CAF50' }} />}
+              sx={{
+                borderRadius: '12px',
+                minHeight: 70,
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #E0E0E0',
+                '&.Mui-expanded': {
+                  borderBottomLeftRadius: 0,
+                  borderBottomRightRadius: 0,
+                  backgroundColor: '#FFFFFF',
+                  borderColor: '#4CAF50',
+                },
+                '& .MuiAccordionSummary-content': {
+                  alignItems: 'center',
+                  margin: '12px 0',
+                },
+                '&:hover': {
+                  backgroundColor: '#F5F5F5',
+                }
+              }}
+            >
+              <Box display="flex" alignItems="center" justifyContent="space-between" width="100%" sx={{ pr: 2 }}>
+                {/* Nome da refeição e alimentos */}
+                <Box sx={{ minWidth: 0, flex: 1, mr: 2 }}>
+                  <Typography variant="h6" fontWeight="600" sx={{ fontSize: '1.1rem', mb: 0.5, color: '#333333' }}>
+                    {refeicao.nome}
+                  </Typography>
+                  {/* <Typography variant="body2" color="text.secondary" sx={{ 
+                    fontSize: '0.8rem',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    maxWidth: { xs: '200px', sm: '300px', md: '400px' }
+                  }}>
+                    {refeicao.itens.map(item => item.alimento.nome).join(', ')}
+                  </Typography> */}
+                </Box>
+                
+                {/* Informações nutricionais */}
+                <Box display="flex" alignItems="center" gap={{ xs: 1, sm: 2 }} sx={{ flex: '0 0 auto', flexWrap: 'wrap' }}>
+                  <Typography variant="body2" color="rgba(51,51,51,0.7)" sx={{ 
+                    whiteSpace: 'nowrap',
+                    display: { xs: 'none', sm: 'block' }
+                  }}>
+                    {refeicao.itens.length} {refeicao.itens.length === 1 ? 'alimento' : 'alimentos'}
+                  </Typography>
+                  
+                  <Typography variant="body2" color="#FF9800" sx={{ 
+                    whiteSpace: 'nowrap', 
+                    fontWeight: '500',
+                    fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                  }}>
+                    {parseFloat(refeicao.total_carbo).toFixed(1)}g carbo
+                  </Typography>
+                  
+                  <Typography variant="body2" color="#9C27B0" sx={{ 
+                    whiteSpace: 'nowrap', 
+                    fontWeight: '500',
+                    fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                  }}>
+                    {parseFloat(refeicao.total_gordura).toFixed(1)}g gord
+                  </Typography>
+                  
+                  <Typography variant="body2" color="#FFC107" sx={{ 
+                    whiteSpace: 'nowrap', 
+                    fontWeight: '500',
+                    fontSize: { xs: '0.75rem', sm: '0.875rem' }
+                  }}>
+                    {parseFloat(refeicao.total_proteina).toFixed(1)}g prot
+                  </Typography>
+                  
+                  <Typography variant="h6" color="#4CAF50" sx={{ 
+                    fontWeight: 'bold', 
+                    whiteSpace: 'nowrap',
+                    fontSize: { xs: '1rem', sm: '1.25rem' }
+                  }}>
+                    {parseFloat(refeicao.total_kcal).toFixed(0)} kcal
+                  </Typography>
+                </Box>
+              </Box>
+            </AccordionSummary>
+            
+            <AccordionDetails sx={{ pt: 0, pb: 2 }}>
+              <Box sx={{ backgroundColor: '#FFFFFF', p: 3, borderRadius: 2, border: '1px solid #E0E0E0', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
+                {/* Descrição da Refeição */}
+                {refeicao.descricao && (
+                  <Box sx={{ mb: 3, p: 2, bgcolor: '#F5F5F5', borderRadius: 2, border: '1px solid #E0E0E0' }}>
+                    <Typography variant="body2" color="rgba(51,51,51,0.7)" sx={{ fontStyle: 'italic' }}>
+                      "{refeicao.descricao}"
+                    </Typography>
+                  </Box>
+                )}
+              {refeicao.itens.length === 0 ? (
+                <Box display="flex" alignItems="center" gap={{ xs: 1, sm: 2 }} sx={{ flex: '0 0 auto', flexWrap: 'wrap' }}>
+                <Typography variant="body2" color="text.secondary">
+                  Nenhum alimento adicionado a esta refeição.
+                </Typography>
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    startIcon={<Add />}
+                    onClick={() => abrirModalCadastroComRefeicao(refeicao)}
+                    size="small"
+                    sx={{ 
+                      borderRadius: 2,
+                      borderColor: '#4CAF50',
+                      color: '#4CAF50',
+                      '&:hover': {
+                        borderColor: '#4CAF50',
+                        backgroundColor: 'rgba(211, 47, 47, 0.04)'
+                      }
+                    }}
+                  >
+                      Adicionar Alimentos
+                  </Button>
+                </Box>
+              ) : (
+                <>
+                {/* Título da seção */}
+                <Typography variant="h6" sx={{ mb: 2,color: '#333333', fontWeight: '600', display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Restaurant fontSize="small" />
+                  Detalhes dos Alimentos ({refeicao.itens.length})
+                </Typography>
+                
+                {/* Versão Desktop - Tabela */}
+                <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+                  <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 2, mb: 3, bgcolor: '#FFFFFF', border: '1px solid #E0E0E0' }}>
+                    <Table size="small">
+                      <TableHead>
+                        <TableRow sx={{ bgcolor: '#F5F5F5' }}>
+                          <TableCell sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Alimento</TableCell>
+                          <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Quantidade</TableCell>
+                          <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Calorias</TableCell>
+                          <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Carbo</TableCell>
+                          <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Proteína</TableCell>
+                          <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Gordura</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {refeicao.itens.map((item, index) => (
+                          <TableRow key={index} hover sx={{ '&:hover': { bgcolor: '#F5F5F5' } }}>
+                            <TableCell sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
+                              <Box display="flex" alignItems="center" gap={1.5}>
+                                <Avatar sx={{ width: 32, height: 32, bgcolor: '#4CAF50', color: '#FFFFFF' }}>
+                                  <Kitchen fontSize="small" />
+                                </Avatar>
+                                <Typography variant="body2" fontWeight="500" color="#333333">
+                                  {item.alimento_nome}
+                                </Typography>
+                              </Box>
+                            </TableCell>
+                            <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
+                              <Chip 
+                                label={`${item.quantidade_g}g`} 
+                                size="small" 
+                                variant="outlined"
+                                sx={{ color: '#4CAF50', borderColor: '#4CAF50' }}
+                              />
+                            </TableCell>
+                            <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
+                              <Typography variant="body2" fontWeight="500" color="#4CAF50">
+                                {item.kcal_total.toFixed(1)}
+                              </Typography>
+                            </TableCell>
+                            <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
+                              <Typography variant="body2" color="#FF9800">
+                                {item.carbo_total.toFixed(1)}g
+                              </Typography>
+                            </TableCell>
+                            <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
+                              <Typography variant="body2" color="#FFC107">
+                                {item.proteina_total.toFixed(1)}g
+                              </Typography>
+                            </TableCell>
+                            <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
+                              <Typography variant="body2" color="#FF9800">
+                                {item.gordura_total.toFixed(1)}g
+                              </Typography>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Box>
 
-      {refeicoes.length === 0 ? (
-        <Paper elevation={2} sx={{ p: 6, textAlign: 'center', borderRadius: 2, bgcolor: '#FFFFFF', border: '1px solid #E0E0E0', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-          <Avatar sx={{ 
+                {/* Versão Mobile - Cards */}
+                <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+                  <Grid container spacing={2}>
+                    {refeicao.itens.map((item, index) => (
+                      <Grid item xs={12} key={index}>
+                        <Card variant="outlined" sx={{ borderRadius: 2, bgcolor: '#FFFFFF', border: '1px solid #E0E0E0' }}>
+                          <CardContent sx={{ p: 2 }}>
+                            <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
+                              <Box display="flex" alignItems="center" gap={1.5} flex={1}>
+                                <Avatar sx={{ width: 36, height: 36, bgcolor: '#4CAF50', color: '#FFFFFF' }}>
+                                  <Kitchen fontSize="small" />
+                                </Avatar>
+                                <Box flex={1}>
+                                  <Typography variant="body1" fontWeight="600" noWrap color="#333333">
+                                    {item.alimento.nome}
+                                  </Typography>
+                                  <Typography variant="caption" color="rgba(51,51,51,0.7)">
+                                    {item.quantidade_g}g
+                                  </Typography>
+                                </Box>
+                              </Box>
+                            </Box>
+                            <Grid container spacing={1}>
+                              <Grid item xs={3}>
+                                <Box textAlign="center">
+                                  <Typography variant="h6" color="#4CAF50" fontWeight="bold">
+                                    {item.kcal_total.toFixed(0)}
+                                  </Typography>
+                                  <Typography variant="caption" color="rgba(51,51,51,0.7)">
+                                    kcal
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                              <Grid item xs={3}>
+                                <Box textAlign="center">
+                                  <Typography variant="h6" color="#FF9800" fontWeight="bold">
+                                    {item.carbo_total.toFixed(1)}
+                                  </Typography>
+                                  <Typography variant="caption" color="rgba(51,51,51,0.7)">
+                                    carbo
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                              <Grid item xs={3}>
+                                <Box textAlign="center">
+                                  <Typography variant="h6" color="#FFC107" fontWeight="bold">
+                                    {item.proteina_total.toFixed(1)}
+                                  </Typography>
+                                  <Typography variant="caption" color="rgba(51,51,51,0.7)">
+                                    prot
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                              <Grid item xs={3}>
+                                <Box textAlign="center">
+                                  <Typography variant="h6" color="#FF9800" fontWeight="bold">
+                                    {item.gordura_total.toFixed(1)}
+                                  </Typography>
+                                  <Typography variant="caption" color="rgba(51,51,51,0.7)">
+                                    gord
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                            </Grid>
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+
+                {/* Ações */}
+                <Box display="flex" justifyContent="space-between" alignItems="center" mt={3} pt={2} sx={{ borderTop: '1px solid #E0E0E0' }}>
+                  <Typography variant="caption" color="rgba(51,51,51,0.7)" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <CalendarToday fontSize="small" />
+                    Criado em {formatarData(refeicao.data_criacao)}
+                  </Typography>
+                {refeicao.essencial !== true && (
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    startIcon={deletandoId === refeicao.id ? <CircularProgress size={16} /> : <Delete />}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      AlertDeletarRefeicao(refeicao.id);
+                    }}
+                    disabled={deletandoId === refeicao.id}
+                    size="small"
+                    sx={{ 
+                      borderRadius: 2,
+                      borderColor: '#d32f2f',
+                      color: '#d32f2f',
+                      '&:hover': {
+                        borderColor: '#d32f2f',
+                        backgroundColor: 'rgba(211, 47, 47, 0.04)'
+                      }
+                    }}
+                  >
+                    {deletandoId === refeicao.id ? 'Excluindo...' : 'Excluir Refeição'}
+                  </Button>
+                )}
+
+
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    startIcon={<Add />}
+                    onClick={() => abrirModalCadastroComRefeicao(refeicao)}
+                    size="small"
+                    sx={{ 
+                      borderRadius: 2,
+                      borderColor: '#4CAF50',
+                      color: '#4CAF50',
+                      '&:hover': {
+                        borderColor: '#4CAF50',
+                        backgroundColor: 'rgba(211, 47, 47, 0.04)'
+                      }
+                    }}
+                  >
+                    Editar Refeição
+                  </Button>
+                </Box>
+                </>
+              )}
+
+              </Box>
+            </AccordionDetails>
+          </Accordion>
+          </Grow>
+        ))}
+      </Box>
+
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            onClick={() => abrirModalCadastro()}
+            size="large"
+            sx={{
+              borderRadius: 2,
+              background: 'linear-gradient(45deg, #4CAF50 30%, #388E3C 90%)',
+              color: '#FFFFFF',
+              boxShadow: '0 3px 5px 2px rgba(76, 175, 80, .3)',
+            }}
+          >
+            Nova Refeição
+          </Button>
+
+      </Box>
+        {/* <Paper elevation={2} sx={{ p: 6, textAlign: 'center', borderRadius: 2, bgcolor: '#FFFFFF', border: '1px solid #E0E0E0', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}> */}
+          {/* <Avatar sx={{ 
             width: 100, 
             height: 100, 
             mx: 'auto', 
@@ -758,314 +1121,9 @@ export default function ListaRefeicoes({ onChatbotOpen }) {
           </Typography>
           <Typography variant="body1" color="rgba(51,51,51,0.7)" sx={{ mb: 3 }}>
             Comece criando sua primeira refeição personalizada
-          </Typography>
-          <Button
-            variant="contained"
-            startIcon={<Add />}
-            onClick={abrirModalCadastro}
-            size="large"
-            sx={{
-              borderRadius: 2,
-              background: 'linear-gradient(45deg, #4CAF50 30%, #388E3C 90%)',
-              color: '#FFFFFF',
-              boxShadow: '0 3px 5px 2px rgba(76, 175, 80, .3)',
-            }}
-          >
-            Criar Primeira Refeição
-          </Button>
-        </Paper>
-      ) : (
-        <Box>
-          {refeicoes.map((refeicao, index) => (
-            <Grow
-              key={refeicao.id}
-              in={true}
-              timeout={300 + (index * 100)}
-            >
-              <Accordion
-                expanded={expandedRefeicao === `panel-${refeicao.id}`}
-                onChange={handleAccordionChange(`panel-${refeicao.id}`)}
-                sx={{
-                  mb: 2,
-                  borderRadius: '12px !important',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                  '&:before': { display: 'none' },
-                  '&.Mui-expanded': {
-                    boxShadow: '0 4px 16px rgba(0,0,0,0.15)',
-                  },
-                  transition: 'all 0.3s ease',
-                }}
-              >
-              <AccordionSummary
-                expandIcon={<ExpandMore sx={{ color: '#4CAF50' }} />}
-                sx={{
-                  borderRadius: '12px',
-                  minHeight: 70,
-                  backgroundColor: '#FFFFFF',
-                  border: '1px solid #E0E0E0',
-                  '&.Mui-expanded': {
-                    borderBottomLeftRadius: 0,
-                    borderBottomRightRadius: 0,
-                    backgroundColor: '#FFFFFF',
-                    borderColor: '#4CAF50',
-                  },
-                  '& .MuiAccordionSummary-content': {
-                    alignItems: 'center',
-                    margin: '12px 0',
-                  },
-                  '&:hover': {
-                    backgroundColor: '#F5F5F5',
-                  }
-                }}
-              >
-                <Box display="flex" alignItems="center" justifyContent="space-between" width="100%" sx={{ pr: 2 }}>
-                  {/* Nome da refeição e alimentos */}
-                  <Box sx={{ minWidth: 0, flex: 1, mr: 2 }}>
-                    <Typography variant="h6" fontWeight="600" sx={{ fontSize: '1.1rem', mb: 0.5, color: '#333333' }}>
-                      {refeicao.nome}
-                    </Typography>
-                    {/* <Typography variant="body2" color="text.secondary" sx={{ 
-                      fontSize: '0.8rem',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                      maxWidth: { xs: '200px', sm: '300px', md: '400px' }
-                    }}>
-                      {refeicao.itens.map(item => item.alimento.nome).join(', ')}
-                    </Typography> */}
-                  </Box>
-                  
-                  {/* Informações nutricionais */}
-                  <Box display="flex" alignItems="center" gap={{ xs: 1, sm: 2 }} sx={{ flex: '0 0 auto', flexWrap: 'wrap' }}>
-                    <Typography variant="body2" color="rgba(51,51,51,0.7)" sx={{ 
-                      whiteSpace: 'nowrap',
-                      display: { xs: 'none', sm: 'block' }
-                    }}>
-                      {refeicao.itens.length} {refeicao.itens.length === 1 ? 'alimento' : 'alimentos'}
-                    </Typography>
-                    
-                    <Typography variant="body2" color="#FF9800" sx={{ 
-                      whiteSpace: 'nowrap', 
-                      fontWeight: '500',
-                      fontSize: { xs: '0.75rem', sm: '0.875rem' }
-                    }}>
-                      {parseFloat(refeicao.total_carbo).toFixed(1)}g carbo
-                    </Typography>
-                    
-                    <Typography variant="body2" color="#9C27B0" sx={{ 
-                      whiteSpace: 'nowrap', 
-                      fontWeight: '500',
-                      fontSize: { xs: '0.75rem', sm: '0.875rem' }
-                    }}>
-                      {parseFloat(refeicao.total_gordura).toFixed(1)}g gord
-                    </Typography>
-                    
-                    <Typography variant="body2" color="#FFC107" sx={{ 
-                      whiteSpace: 'nowrap', 
-                      fontWeight: '500',
-                      fontSize: { xs: '0.75rem', sm: '0.875rem' }
-                    }}>
-                      {parseFloat(refeicao.total_proteina).toFixed(1)}g prot
-                    </Typography>
-                    
-                    <Typography variant="h6" color="#4CAF50" sx={{ 
-                      fontWeight: 'bold', 
-                      whiteSpace: 'nowrap',
-                      fontSize: { xs: '1rem', sm: '1.25rem' }
-                    }}>
-                      {parseFloat(refeicao.total_kcal).toFixed(0)} kcal
-                    </Typography>
-                  </Box>
-                </Box>
-              </AccordionSummary>
-              
-              <AccordionDetails sx={{ pt: 0, pb: 2 }}>
-                <Box sx={{ backgroundColor: '#FFFFFF', p: 3, borderRadius: 2, border: '1px solid #E0E0E0', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }}>
-                  {/* Descrição da Refeição */}
-                  {refeicao.descricao && (
-                    <Box sx={{ mb: 3, p: 2, bgcolor: '#F5F5F5', borderRadius: 2, border: '1px solid #E0E0E0' }}>
-                      <Typography variant="body2" color="rgba(51,51,51,0.7)" sx={{ fontStyle: 'italic' }}>
-                        "{refeicao.descricao}"
-                      </Typography>
-                    </Box>
-                  )}
+          </Typography> */}
 
-                  {/* Título da seção */}
-                  <Typography variant="h6" sx={{ mb: 2,color: '#333333', fontWeight: '600', display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Restaurant fontSize="small" />
-                    Detalhes dos Alimentos ({refeicao.itens.length})
-                  </Typography>
-                  
-                  {/* Versão Desktop - Tabela */}
-                  <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                    <TableContainer component={Paper} variant="outlined" sx={{ borderRadius: 2, mb: 3, bgcolor: '#FFFFFF', border: '1px solid #E0E0E0' }}>
-                      <Table size="small">
-                        <TableHead>
-                          <TableRow sx={{ bgcolor: '#F5F5F5' }}>
-                            <TableCell sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Alimento</TableCell>
-                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Quantidade</TableCell>
-                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Calorias</TableCell>
-                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Carbo</TableCell>
-                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Proteína</TableCell>
-                            <TableCell align="center" sx={{ fontWeight: 'bold', color: '#333333', borderBottom: '1px solid #E0E0E0' }}>Gordura</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {refeicao.itens.map((item, index) => (
-                            <TableRow key={index} hover sx={{ '&:hover': { bgcolor: '#F5F5F5' } }}>
-                              <TableCell sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
-                                <Box display="flex" alignItems="center" gap={1.5}>
-                                  <Avatar sx={{ width: 32, height: 32, bgcolor: '#4CAF50', color: '#FFFFFF' }}>
-                                    <Kitchen fontSize="small" />
-                                  </Avatar>
-                                  <Typography variant="body2" fontWeight="500" color="#333333">
-                                    {item.alimento_nome}
-                                  </Typography>
-                                </Box>
-                              </TableCell>
-                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
-                                <Chip 
-                                  label={`${item.quantidade_g}g`} 
-                                  size="small" 
-                                  variant="outlined"
-                                  sx={{ color: '#4CAF50', borderColor: '#4CAF50' }}
-                                />
-                              </TableCell>
-                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
-                                <Typography variant="body2" fontWeight="500" color="#4CAF50">
-                                  {item.kcal_total.toFixed(1)}
-                                </Typography>
-                              </TableCell>
-                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
-                                <Typography variant="body2" color="#FF9800">
-                                  {item.carbo_total.toFixed(1)}g
-                                </Typography>
-                              </TableCell>
-                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
-                                <Typography variant="body2" color="#FFC107">
-                                  {item.proteina_total.toFixed(1)}g
-                                </Typography>
-                              </TableCell>
-                              <TableCell align="center" sx={{ borderBottom: '1px solid rgba(224, 224, 224, 0.5)' }}>
-                                <Typography variant="body2" color="#FF9800">
-                                  {item.gordura_total.toFixed(1)}g
-                                </Typography>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  </Box>
-
-                  {/* Versão Mobile - Cards */}
-                  <Box sx={{ display: { xs: 'block', md: 'none' } }}>
-                    <Grid container spacing={2}>
-                      {refeicao.itens.map((item, index) => (
-                        <Grid item xs={12} key={index}>
-                          <Card variant="outlined" sx={{ borderRadius: 2, bgcolor: '#FFFFFF', border: '1px solid #E0E0E0' }}>
-                            <CardContent sx={{ p: 2 }}>
-                              <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
-                                <Box display="flex" alignItems="center" gap={1.5} flex={1}>
-                                  <Avatar sx={{ width: 36, height: 36, bgcolor: '#4CAF50', color: '#FFFFFF' }}>
-                                    <Kitchen fontSize="small" />
-                                  </Avatar>
-                                  <Box flex={1}>
-                                    <Typography variant="body1" fontWeight="600" noWrap color="#333333">
-                                      {item.alimento.nome}
-                                    </Typography>
-                                    <Typography variant="caption" color="rgba(51,51,51,0.7)">
-                                      {item.quantidade_g}g
-                                    </Typography>
-                                  </Box>
-                                </Box>
-                              </Box>
-                              <Grid container spacing={1}>
-                                <Grid item xs={3}>
-                                  <Box textAlign="center">
-                                    <Typography variant="h6" color="#4CAF50" fontWeight="bold">
-                                      {item.kcal_total.toFixed(0)}
-                                    </Typography>
-                                    <Typography variant="caption" color="rgba(51,51,51,0.7)">
-                                      kcal
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                                <Grid item xs={3}>
-                                  <Box textAlign="center">
-                                    <Typography variant="h6" color="#FF9800" fontWeight="bold">
-                                      {item.carbo_total.toFixed(1)}
-                                    </Typography>
-                                    <Typography variant="caption" color="rgba(51,51,51,0.7)">
-                                      carbo
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                                <Grid item xs={3}>
-                                  <Box textAlign="center">
-                                    <Typography variant="h6" color="#FFC107" fontWeight="bold">
-                                      {item.proteina_total.toFixed(1)}
-                                    </Typography>
-                                    <Typography variant="caption" color="rgba(51,51,51,0.7)">
-                                      prot
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                                <Grid item xs={3}>
-                                  <Box textAlign="center">
-                                    <Typography variant="h6" color="#FF9800" fontWeight="bold">
-                                      {item.gordura_total.toFixed(1)}
-                                    </Typography>
-                                    <Typography variant="caption" color="rgba(51,51,51,0.7)">
-                                      gord
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                              </Grid>
-                            </CardContent>
-                          </Card>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </Box>
-
-                  {/* Ações */}
-                  <Box display="flex" justifyContent="space-between" alignItems="center" mt={3} pt={2} sx={{ borderTop: '1px solid #E0E0E0' }}>
-                    <Typography variant="caption" color="rgba(51,51,51,0.7)" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <CalendarToday fontSize="small" />
-                      Criado em {formatarData(refeicao.data_criacao)}
-                    </Typography>
-                    
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      startIcon={deletandoId === refeicao.id ? <CircularProgress size={16} /> : <Delete />}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        AlertDeletarRefeicao(refeicao.id);
-                      }}
-                      disabled={deletandoId === refeicao.id}
-                      size="small"
-                      sx={{ 
-                        borderRadius: 2,
-                        borderColor: '#d32f2f',
-                        color: '#d32f2f',
-                        '&:hover': {
-                          borderColor: '#d32f2f',
-                          backgroundColor: 'rgba(211, 47, 47, 0.04)'
-                        }
-                      }}
-                    >
-                      {deletandoId === refeicao.id ? 'Excluindo...' : 'Excluir Refeição'}
-                    </Button>
-                  </Box>
-                </Box>
-              </AccordionDetails>
-            </Accordion>
-            </Grow>
-          ))}
-        </Box>
-      )}
+        {/* </Paper> */}
 
       {/* Dialog de Detalhes */}
       <Dialog
@@ -1269,6 +1327,7 @@ export default function ListaRefeicoes({ onChatbotOpen }) {
       <ModalCadastroRefeicao
         open={modalCadastroAberto}
         onClose={fecharModalCadastro}
+        refeicaoParaEditar={refeicaoUpdate}
         onRefeicaoCriada={handleRefeicaoCriada}
         dataRefeicao={dataFiltro}
       />

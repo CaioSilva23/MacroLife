@@ -164,6 +164,10 @@ export const AppProvider = ({ children }) => {
     dispatch({ type: ACTIONS.ADD_REFEICAO, payload: refeicao, date });
   }, []);
 
+  const updateRefeicao = useCallback((refeicao) => {
+    dispatch({ type: ACTIONS.UPDATE_REFEICAO, payload: refeicao });
+  }, []);
+
   const removeRefeicao = useCallback((id) => {
     dispatch({ type: ACTIONS.REMOVE_REFEICAO, id });
   }, []);
@@ -198,6 +202,7 @@ export const AppProvider = ({ children }) => {
       setRefeicoes,
       setAlimentos,
       addRefeicao,
+      updateRefeicao,
       removeRefeicao,
       setError,
       clearError,

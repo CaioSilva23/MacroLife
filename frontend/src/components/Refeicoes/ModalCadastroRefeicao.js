@@ -44,7 +44,7 @@ import {
 import { alimentosService, refeicoesService } from '../../services/api';
 import Swal from "sweetalert2";
 
-const ModalCadastroRefeicao = ({ open, onClose, onRefeicaoCriada, dataRefeicao }) => {
+const ModalCadastroRefeicao = ({ open, onClose, refeicaoParaEditar, onRefeicaoCriada, dataRefeicao }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { state, actions, cache } = useApp();
@@ -55,6 +55,18 @@ const ModalCadastroRefeicao = ({ open, onClose, onRefeicaoCriada, dataRefeicao }
   const [alimentoSelecionado, setAlimentoSelecionado] = useState(null);
   const [quantidade, setQuantidade] = useState('');
   const [itensRefeicao, setItensRefeicao] = useState([]);
+
+  // Efeito para carregar dados da refeição a ser editada
+  useEffect(() => {
+    if (refeicaoParaEditar) {
+      setNome(refeicaoParaEditar.nome);
+      setDescricao(refeicaoParaEditar.descricao);
+      setItensRefeicao(refeicaoParaEditar.itens);
+    }
+
+    console.log('Refeição para editar:', refeicaoParaEditar);
+  }, [refeicaoParaEditar]);
+
   const [busca, setBusca] = useState('');
   const [mostrarLista, setMostrarLista] = useState(false);
 
@@ -134,14 +146,19 @@ const ModalCadastroRefeicao = ({ open, onClose, onRefeicaoCriada, dataRefeicao }
       return;
     }
 
+    console.log('Alimento selecionado:', alimentoSelecionado);
+    console.log('Quantidade:', quantidade);
     const novoItem = {
-      alimento: alimentoSelecionado,
+      alimento_id: alimentoSelecionado.id,
+      nome: alimentoSelecionado.nome,
       quantidade_g: parseFloat(quantidade),
       kcal_total: (alimentoSelecionado.energia_kcal / 100) * parseFloat(quantidade),
       carbo_total: (alimentoSelecionado.carboidratos_g / 100) * parseFloat(quantidade),
       proteina_total: (alimentoSelecionado.proteinas_g / 100) * parseFloat(quantidade),
       gordura_total: (alimentoSelecionado.lipideos_g / 100) * parseFloat(quantidade),
     };
+
+    console.log('Adicionando item:', novoItem);
 
     setItensRefeicao([...itensRefeicao, novoItem]);
     setAlimentoSelecionado(null);
@@ -166,6 +183,53 @@ const ModalCadastroRefeicao = ({ open, onClose, onRefeicaoCriada, dataRefeicao }
     }), { kcal: 0, carbo: 0, proteina: 0, gordura: 0 });
   };
 
+  const editarRefeicao = useCallback(async () => {
+    if (!nome.trim()) {
+      actions.setError('cadastro', 'Nome da refeição é obrigatório');
+      return;
+    }
+
+    if (itensRefeicao.length === 0) {
+      actions.setError('cadastro', 'Adicione pelo menos um alimento à refeição');
+      return;
+    }
+
+    try {
+      actions.setLoading('editando', true);
+      actions.clearError('cadastro');
+
+      console.log('Refeição para editar:', itensRefeicao);
+
+      const dadosRefeicao = {
+        id: refeicaoParaEditar.id,
+        nome: nome,
+        descricao: descricao,
+        itens: itensRefeicao.map(item => ({
+          alimento_id: item.alimento || item.alimento_id,
+          quantidade_g: item.quantidade_g,
+        })),
+      };
+
+      console.log('Dados para atualizar refeição:', dadosRefeicao);
+
+      const response = await refeicoesService.atualizar(refeicaoParaEditar.id, dadosRefeicao);
+      actions.updateRefeicao(response.data);
+      Swal.fire("Sucesso", "A refeição foi editada com sucesso!", "success");
+
+      if (onRefeicaoCriada) {
+        onRefeicaoCriada(response.data);
+      }
+
+      onClose();
+
+    } catch (err) {
+      Swal.fire("Erro!", "Erro ao tentar editar a refeição, tente novamente.", "error");
+      actions.setError('cadastro', 'Erro ao editar refeição: ' + err.message);
+    } finally {
+      actions.setLoading('editando', false);
+    }
+  }, [nome, descricao, itensRefeicao, actions, onClose, onRefeicaoCriada, refeicaoParaEditar]);
+
   const salvarRefeicao = useCallback(async () => {
     if (!nome.trim()) {
       actions.setError('cadastro', 'Nome da refeição é obrigatório');
@@ -185,7 +249,7 @@ const ModalCadastroRefeicao = ({ open, onClose, onRefeicaoCriada, dataRefeicao }
         nome: nome.trim(),
         descricao: descricao.trim(),
         itens: itensRefeicao.map(item => ({
-          alimento_id: item.alimento.id,
+          alimento_id: item.alimento || item.alimento_id,
           quantidade_g: item.quantidade_g,
         })),
       };
@@ -280,6 +344,7 @@ const ModalCadastroRefeicao = ({ open, onClose, onRefeicaoCriada, dataRefeicao }
           <TextField
             fullWidth
             label="Nome da Refeição *"
+            disabled={refeicaoParaEditar}
             value={nome}
             onChange={(e) => setNome(e.target.value)}
             required
@@ -493,7 +558,7 @@ const ModalCadastroRefeicao = ({ open, onClose, onRefeicaoCriada, dataRefeicao }
                         <TableRow key={index} hover>
                           <TableCell>
                             <Typography variant="body2" fontWeight="medium">
-                              {item.alimento.nome}
+                              {item.nome||item.alimento_nome}
                             </Typography>
                           </TableCell>
                           <TableCell align="center">
@@ -567,7 +632,7 @@ const ModalCadastroRefeicao = ({ open, onClose, onRefeicaoCriada, dataRefeicao }
           Cancelar
         </Button>
         <Button
-          onClick={salvarRefeicao}
+          onClick={refeicaoParaEditar ? editarRefeicao : salvarRefeicao}
           disabled={loadingCriando || !nome.trim() || itensRefeicao.length === 0}
           variant="contained"
           size="large"
